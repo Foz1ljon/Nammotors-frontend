@@ -21,7 +21,7 @@
       </select>
     </div>
 
-    <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-4">
+    <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4">
       <ProductItem v-for="item in 5" :key="item" />
     </div>
   </div>
