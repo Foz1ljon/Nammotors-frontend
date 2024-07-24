@@ -53,7 +53,7 @@
               <i
                 class="fi fi-ss-user w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
               ></i>
-              Profile
+              Profil
             </li>
             <li
               class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
@@ -62,7 +62,7 @@
               <i
                 class="fi fi-sr-settings w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
               ></i>
-              Settings
+              Sozlamalar
             </li>
             <li
               class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
@@ -80,7 +80,7 @@
               <i
                 class="fi fi-br-sign-out-alt w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
               ></i>
-              Logout
+              Chiqish
             </li>
           </ul>
         </div>
@@ -95,30 +95,30 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const isDarkMode = ref(false);
 const dropdownOpen = ref(false);
 const router = useRouter();
 
 const toggleDarkMode = () => {
   isDarkMode.value = !isDarkMode.value;
-};
-
-watch(isDarkMode, (newVal) => {
-  if (newVal) {
+  if (isDarkMode.value) {
     document.documentElement.classList.add("dark");
     localStorage.setItem("darkMode", "true");
   } else {
     document.documentElement.classList.remove("dark");
     localStorage.setItem("darkMode", "false");
   }
-});
+};
 
 // Initialize dark mode based on local storage
 if (localStorage.getItem("darkMode") === "true") {
   isDarkMode.value = true;
+  document.documentElement.classList.add("dark");
 }
 
 const toggleDropdown = () => {
@@ -131,8 +131,7 @@ const navigateTo = (path) => {
 };
 
 const logout = () => {
-  // Implement logout logic here
-  console.log("Logged out");
+  toast.success("Success logout");
   dropdownOpen.value = false;
 };
 </script>

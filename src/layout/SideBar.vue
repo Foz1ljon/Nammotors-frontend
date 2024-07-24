@@ -11,60 +11,66 @@
 
     <!-- Navigation Links -->
     <div
-      class="flex w-full justify-between sm:flex-col sm:justify-center md:items-start items-center md:px-3 md:gap-6 xl:text-2xl lg:text-xl md:text-base text-3xl"
+      class="flex w-full justify-between sm:flex-col sm:justify-evenly md:items-start items-center md:px-3 sm:gap-6 xl:text-2xl lg:text-xl sm:text-base text-3xl"
     >
+      <router-link
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        active-class="bg-gray-400"
+        to="/dashboard"
+      >
+        <i class="fi fi-ss-home"></i>
+        <p class="sm:block hidden">Dashboard</p>
+      </router-link>
+
       <!-- Products Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/products"
       >
         <i class="fi fi-ss-engine"></i>
-        <p class="md:block hidden">Mahsulotlar</p>
+        <p class="sm:block hidden">Mahsulotlar</p>
       </router-link>
 
       <!-- Categories Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/categories"
       >
         <i class="fi fi-sr-category"></i>
-        <p class="md:block hidden">Kategoriyalar</p>
+        <p class="sm:block hidden">Kategoriyalar</p>
       </router-link>
 
       <!-- Clients Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/clients"
       >
         <i class="fi fi-sr-users"></i>
-        <p class="md:block hidden">Mijozlar</p>
+        <p class="sm:block hidden">Mijozlar</p>
       </router-link>
 
       <!-- Admins Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/admins"
       >
         <i class="fi fi-ss-admin-alt"></i>
-        <p class="md:block hidden">Adminlar</p>
+        <p class="sm:block hidden">Adminlar</p>
       </router-link>
 
       <!-- Contracts Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/contracts"
       >
         <i class="fi fi-ss-diploma"></i>
-        <p class="md:block hidden">Shartnomalar</p>
+        <p class="sm:block hidden">Shartnomalar</p>
       </router-link>
     </div>
-
-    <!-- Logout Button -->
-    <!-- Add logout button here if needed -->
   </div>
 </template>

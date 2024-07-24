@@ -4,24 +4,23 @@
     class="min-h-screen bg-gray-50 dark:bg-gray-800 text-black dark:text-white"
   >
     <div class="my-6 p-4">
-      <h1 class="text-3xl font-semibold mb-4 text-center">
+      <h1 class="md:text-4xl text-3xl font-semibold mb-6 ">
         Kategoriyalar Ro'yxati
       </h1>
 
-      <!-- Search Input -->
-      <div class="flex flex-col sm:flex-row items-center gap-2 mb-4">
+      <!-- Search Input and Create Category Button -->
+      <div class="flex items-center gap-2 mb-4">
         <input
           v-model="searchTerm"
           type="text"
           placeholder="Kategoriyalarni Qidirish"
           class="border dark:border-gray-600 p-2 w-full sm:w-auto flex-grow rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white"
         />
-        <!-- Create Category Button -->
         <button
           @click="showCreateModal = true"
-          class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition"
+          class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition"
         >
-          <i class="fi fi-sr-add"></i>
+          <i class="fi fi-rr-multiple"></i>
         </button>
       </div>
 
@@ -30,7 +29,7 @@
         <div
           v-for="(category, index) in filteredCategories"
           :key="index"
-          class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow transform transition hover:scale-105"
+          class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow transition-transform transform hover:scale-105"
         >
           <div class="flex justify-between items-center">
             <span class="text-sm text-gray-900 dark:text-white">{{
@@ -70,16 +69,16 @@
               placeholder="Kategoriya Nomi"
               class="border dark:border-gray-600 p-2 mb-4 w-full rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white"
             />
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-2">
               <button
                 @click="createCategory"
-                class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 transition"
+                class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition"
               >
                 Yaratish
               </button>
               <button
                 @click="showCreateModal = false"
-                class="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition"
+                class="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
               >
                 Bekor Qilish
               </button>
@@ -106,16 +105,16 @@
               placeholder="Kategoriya Nomi"
               class="border dark:border-gray-600 p-2 mb-4 w-full rounded-lg bg-white dark:bg-gray-700 text-black dark:text-white"
             />
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-2">
               <button
                 @click="updateCategory"
-                class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600 transition"
+                class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition"
               >
                 Yangilash
               </button>
               <button
                 @click="showEditCategoryModal = false"
-                class="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition"
+                class="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
               >
                 Bekor Qilish
               </button>
@@ -146,7 +145,7 @@ const showEditCategoryModal = ref(false);
 const newCategory = ref({ name: "" });
 const editCategoryData = ref({ name: "" });
 const searchTerm = ref("");
-const isDarkMode = ref(false);
+const isDarkMode = ref(localStorage.getItem("darkMode") === "true");
 let editCategoryIndex = null;
 
 watch(isDarkMode, (newVal) => {
@@ -159,10 +158,8 @@ watch(isDarkMode, (newVal) => {
   }
 });
 
-
-
 const createCategory = () => {
-  if (newCategory.value.name) {
+  if (newCategory.value.name.trim()) {
     categories.value.push({ ...newCategory.value });
     newCategory.value.name = "";
     showCreateModal.value = false;
@@ -179,7 +176,7 @@ const openEditModal = (index) => {
 };
 
 const updateCategory = () => {
-  if (editCategoryData.value.name && editCategoryIndex !== null) {
+  if (editCategoryData.value.name.trim() && editCategoryIndex !== null) {
     categories.value[editCategoryIndex].name = editCategoryData.value.name;
     showEditCategoryModal.value = false;
     toast.success("Kategoriya muvaffaqiyatli yangilandi!");
@@ -194,23 +191,9 @@ const deleteCategory = (index) => {
 };
 
 const filteredCategories = computed(() => {
-  if (!searchTerm.value) {
-    return categories.value;
-  }
+  const term = searchTerm.value.trim().toLowerCase();
   return categories.value.filter((category) =>
-    category.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    category.name.toLowerCase().includes(term)
   );
 });
 </script>
-<style scoped>
-/* Add any additional custom styles here */
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0;
-  transform: scale(0.9);
-}
-</style>

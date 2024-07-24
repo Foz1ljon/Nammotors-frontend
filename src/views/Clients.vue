@@ -1,12 +1,14 @@
 <template>
   <div class="p-6 bg-white dark:bg-gray-900 min-h-screen">
-    <h1 class="text-4xl text-black dark:text-white font-semibold mb-6">
+    <h1
+      class="md:text-4xl text-3xl text-black dark:text-white font-semibold mb-6"
+    >
       Mijozlar
     </h1>
 
     <!-- Search Input and Create Client Button -->
-    <div class="flex flex-col md:flex-row md:justify-between mb-6">
-      <div class="flex flex-1 mb-4 md:mb-0">
+    <div class="flex justify-between gap-4 mb-6">
+      <div class="flex flex-1 md:mb-0">
         <input
           v-model="searchQuery"
           type="text"
@@ -233,9 +235,8 @@ const newClient = reactive({
   admin: "",
 });
 const editClient = reactive({});
-const editIndex = ref(null);
 
-const clientTypes = ["b2b", "b2c", "b2g", "other"];
+const clientTypes = ["b2b", "b2c", "b2g"];
 
 const filteredClients = computed(() => {
   const query = searchQuery.value.toLowerCase();

@@ -5,6 +5,7 @@ import Admins from "../views/Admins.vue";
 import Categories from "../views/Categories.vue";
 import Clients from "../views/Clients.vue";
 import Contracts from "../views/Contracts.vue";
+import Home from "../views/Home.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,14 +13,20 @@ const router = createRouter({
     {
       path: "/login",
       name: "auth",
+
       component: () => import("@/pages/Auth.vue"),
     },
     {
       path: "/",
       name: "dashboard",
-      redirect: "/products",
+      redirect: "/dashboard",
       component: Dashboard,
       children: [
+        {
+          path: "/dashboard",
+          name: "home-page",
+          component: Home,
+        },
         {
           path: "/products",
           name: "product-list",
