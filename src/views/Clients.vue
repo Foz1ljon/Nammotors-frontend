@@ -29,7 +29,7 @@
         <thead class="bg-gray-100 dark:bg-gray-800">
           <tr>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-4 py-2 md:table-cell hidden text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Ismi
             </th>
@@ -39,12 +39,12 @@
               Telefon raqami
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-4 py-2 text-left md:table-cell hidden text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Turi
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-4 py-2 text-left md:table-cell hidden text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Taklif qilgan
             </th>
@@ -59,16 +59,22 @@
           class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
         >
           <tr v-for="client in filteredClients" :key="client.phone_number">
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-4 py-2 md:table-cell hidden text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.fname }}
             </td>
             <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
               {{ client.phone_number }}
             </td>
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-4 py-2 md:table-cell hidden text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.type }}
             </td>
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-4 md:table-cell hidden py-2 text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.admin }}
             </td>
             <td
