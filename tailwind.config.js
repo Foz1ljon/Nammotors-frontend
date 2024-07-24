@@ -6,7 +6,11 @@ module.exports = {
       center: true,
       padding: "30px",
     },
-    extend: {},
+    extend: {
+      zIndex: {
+        50: "50",
+      },
+    },
   },
   plugins: [],
 };
