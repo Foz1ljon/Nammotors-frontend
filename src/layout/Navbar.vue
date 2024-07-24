@@ -36,7 +36,7 @@
       <!-- User Logo Dropdown -->
       <div class="relative">
         <img
-          src="https://via.placeholder.com/40"
+          src="/logo.png"
           alt="User Logo"
           class="w-10 h-10 rounded-full cursor-pointer"
           @click="toggleDropdown"
