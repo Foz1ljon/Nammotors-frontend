@@ -11,12 +11,19 @@
   ],
   "routes": [
     {
+      "src": "/_next/static/(.*)",
+      "dest": "/_next/static/$1"
+    },
+    {
+      "src": "/_next/(.*)",
+      "dest": "/_next/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
   ],
   "env": {
-    "VUE_APP_API_URL": "@vue-app-api-url",
-    "NODE_ENV": "production"
+    "VUE_APP_API_URL": "@vue-app-api-url"
   }
 }
