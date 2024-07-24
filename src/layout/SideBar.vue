@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed sm:w-[20%] w-full bottom-0 h-[10vh] bg-gray-50 border-r-2 sm:h-screen flex sm:flex-col md:py-0 py-8 gap-6 justify-between md:px-1 px-4 sm:justify-around"
+    class="fixed sm:w-[20%] w-full z-50 bottom-0 h-[10vh] bg-gray-50 border-r-2 sm:h-screen flex sm:flex-col md:py-0 py-8 gap-6 justify-between md:px-1 px-4 sm:justify-around"
   >
     <!-- Header Section -->
     <h1
@@ -15,7 +15,7 @@
     >
       <!-- Products Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 duration-500 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/products"
       >
@@ -25,7 +25,7 @@
 
       <!-- Categories Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 duration-500 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/categories"
       >
@@ -35,7 +35,7 @@
 
       <!-- Clients Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 duration-500 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/clients"
       >
@@ -45,7 +45,7 @@
 
       <!-- Admins Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 duration-500 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/admins"
       >
@@ -55,7 +55,7 @@
 
       <!-- Contracts Link -->
       <router-link
-        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 duration-500 transition-colors shadow-md hover:shadow-lg"
+        class="flex lg:flex-row md:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
         active-class="bg-gray-400"
         to="/contracts"
       >
