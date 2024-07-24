@@ -1,6 +1,8 @@
 <template>
   <div class="p-6 bg-white dark:bg-gray-900 min-h-screen">
-    <h1 class="text-4xl text-black dark:text-white font-semibold mb-6">
+    <h1
+      class="text-3xl md:text-4xl text-black dark:text-white font-semibold mb-6"
+    >
       Mijozlar
     </h1>
 
@@ -29,27 +31,27 @@
         <thead class="bg-gray-100 dark:bg-gray-800">
           <tr>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Ismi
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Telefon raqami
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Turi
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Taklif qilgan
             </th>
             <th
-              class="px-4 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Funksiyalar
             </th>
@@ -59,20 +61,20 @@
           class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
         >
           <tr v-for="client in filteredClients" :key="client.phone_number">
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
               {{ client.fname }}
             </td>
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
               {{ client.phone_number }}
             </td>
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
               {{ client.type }}
             </td>
-            <td class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
               {{ client.admin }}
             </td>
             <td
-              class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 flex space-x-2"
+              class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300 flex space-x-2"
             >
               <button
                 @click="openEditModal(client)"
@@ -277,4 +279,26 @@ function resetNewClientForm() {
 
 <style scoped>
 /* Add any additional custom styles here */
+@media (max-width: 640px) {
+  .text-4xl {
+    font-size: 2rem; /* Adjust for smaller screens */
+  }
+  .text-xl {
+    font-size: 1.25rem; /* Adjust for smaller screens */
+  }
+  .p-6 {
+    padding: 1.5rem; /* Adjust for smaller screens */
+  }
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .w-full {
+    width: 100%;
+  }
+}
 </style>
