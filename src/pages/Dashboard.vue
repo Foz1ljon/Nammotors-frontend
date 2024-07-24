@@ -1,13 +1,12 @@
 <template>
-  <div class="flex">
-    <SideBar />
-    <div class="sm:ml-[20%] w-[80%] container">
-      <RouterView />
-    </div>
-    <!-- <div class="fixed w-full h-[10vh] bg-slate-500 bottom-0"></div> -->
+  <SideBar />
+  <div class="sm:ml-[20%] sm:w-[80%] w-full">
+    <Navbar />
   </div>
+  <!-- <div class="flex"></div> -->
 </template>
 
 <script setup>
-import SideBar from "../layout/SideBar.vue";
+import SideBar from "@/layout/SideBar.vue";
+import Navbar from "@/layout/Navbar.vue";
 </script>
