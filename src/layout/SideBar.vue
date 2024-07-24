@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed sm:w-[20%] w-full z-30 bottom-0 h-[10vh] bg-gray-50 border-r-2 sm:h-screen flex sm:flex-col md:py-0 py-8 gap-6 justify-between md:px-1 px-4 sm:justify-around"
+    class="fixed sm:w-[20%] w-full z-30 bottom-0 h-[10vh] bg-gray-50 sm:border-r-2 sm:h-screen flex sm:flex-col md:py-0 py-8 gap-6 justify-between md:px-1 px-4 sm:justify-around"
   >
     <!-- Header Section -->
     <h1
