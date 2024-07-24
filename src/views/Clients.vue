@@ -1,26 +1,26 @@
 <template>
-  <div class="p-6 bg-white dark:bg-gray-900 min-h-screen">
+  <div class="p-4 md:p-6 bg-white dark:bg-gray-900 min-h-screen">
     <h1
-      class="text-3xl md:text-4xl text-black dark:text-white font-semibold mb-6"
+      class="text-2xl md:text-4xl text-black dark:text-white font-semibold mb-4 md:mb-6"
     >
       Mijozlar
     </h1>
 
     <!-- Search Input and Create Client Button -->
-    <div class="flex flex-col md:flex-row md:justify-between mb-6">
+    <div class="flex flex-col md:flex-row md:justify-between mb-4 md:mb-6">
       <div class="flex flex-1 mb-4 md:mb-0">
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Mijozlarni qidirish..."
-          class="border p-3 rounded-lg w-full md:w-3/4 lg:w-1/2 xl:w-1/3 bg-white dark:bg-gray-800 text-black dark:text-white"
+          class="border p-2 md:p-3 rounded-lg w-full md:w-3/4 lg:w-1/2 xl:w-1/3 bg-white dark:bg-gray-800 text-black dark:text-white"
         />
       </div>
       <button
         @click="showCreateModal = true"
-        class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2"
+        class="bg-gray-700 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2"
       >
-        <i class="fi fi-sr-user-add text-lg"></i>
+        <i class="fi fi-sr-user-add text-base md:text-lg"></i>
         <span class="hidden md:inline">Yangi Mijoz</span>
       </button>
     </div>
@@ -31,27 +31,27 @@
         <thead class="bg-gray-100 dark:bg-gray-800">
           <tr>
             <th
-              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Ismi
             </th>
             <th
-              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Telefon raqami
             </th>
             <th
-              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Turi
             </th>
             <th
-              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Taklif qilgan
             </th>
             <th
-              class="px-2 py-1 text-left text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
+              class="px-2 py-1 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wider"
             >
               Funksiyalar
             </th>
@@ -61,32 +61,40 @@
           class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
         >
           <tr v-for="client in filteredClients" :key="client.phone_number">
-            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-2 py-2 text-xs md:text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.fname }}
             </td>
-            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-2 py-2 text-xs md:text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.phone_number }}
             </td>
-            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-2 py-2 text-xs md:text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.type }}
             </td>
-            <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300">
+            <td
+              class="px-2 py-2 text-xs md:text-sm text-gray-800 dark:text-gray-300"
+            >
               {{ client.admin }}
             </td>
             <td
-              class="px-2 py-2 text-sm text-gray-800 dark:text-gray-300 flex space-x-2"
+              class="px-2 py-2 text-xs md:text-sm text-gray-800 dark:text-gray-300 flex space-x-2"
             >
               <button
                 @click="openEditModal(client)"
                 class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 p-2 rounded-lg"
               >
-                <i class="fi fi-sr-file-edit text-lg"></i>
+                <i class="fi fi-sr-file-edit text-base md:text-lg"></i>
               </button>
               <button
                 @click="removeClient(client)"
                 class="bg-gray-100 dark:bg-gray-700 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-600 p-2 rounded-lg"
               >
-                <i class="fi fi-sr-trash text-lg"></i>
+                <i class="fi fi-sr-trash text-base md:text-lg"></i>
               </button>
             </td>
           </tr>
@@ -97,7 +105,9 @@
     <!-- Create Client Modal -->
     <Modal v-if="showCreateModal" @close="showCreateModal = false">
       <template #header>
-        <h2 class="text-xl font-semibold text-black dark:text-white">
+        <h2
+          class="text-xl md:text-2xl font-semibold text-black dark:text-white"
+        >
           Mijoz yaratish
         </h2>
       </template>
@@ -128,17 +138,17 @@
       <template #footer>
         <button
           type="submit"
-          class="bg-gray-700 text-white px-4 py-2 rounded-lg mr-2 flex items-center gap-2"
+          class="bg-gray-700 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg mr-2 flex items-center gap-2"
           @click="createClient"
         >
-          <i class="fi fi-ss-disk text-lg"></i>
+          <i class="fi fi-ss-disk text-base md:text-lg"></i>
           <span>Saqlash</span>
         </button>
         <button
           @click="showCreateModal = false"
-          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg flex items-center gap-2"
+          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-2 md:px-4 md:py-2 rounded-lg flex items-center gap-2"
         >
-          <i class="fi fi-rr-delete-document text-lg"></i>
+          <i class="fi fi-rr-delete-document text-base md:text-lg"></i>
           <span>Bekor qilish</span>
         </button>
       </template>
@@ -147,7 +157,9 @@
     <!-- Edit Client Modal -->
     <Modal v-if="showEditModal" @close="showEditModal = false">
       <template #header>
-        <h2 class="text-xl font-semibold text-black dark:text-white">
+        <h2
+          class="text-xl md:text-2xl font-semibold text-black dark:text-white"
+        >
           Mijozni tahrirlash
         </h2>
       </template>
@@ -178,17 +190,17 @@
       <template #footer>
         <button
           type="submit"
-          class="bg-gray-700 text-white px-4 py-2 rounded-lg mr-2 flex items-center gap-2"
+          class="bg-gray-700 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg mr-2 flex items-center gap-2"
           @click="saveEdit"
         >
-          <i class="fi fi-ss-disk text-lg"></i>
+          <i class="fi fi-ss-disk text-base md:text-lg"></i>
           <span>Saqlash</span>
         </button>
         <button
           @click="showEditModal = false"
-          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg flex items-center gap-2"
+          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-3 py-2 md:px-4 md:py-2 rounded-lg flex items-center gap-2"
         >
-          <i class="fi fi-rr-delete-document text-lg"></i>
+          <i class="fi fi-rr-delete-document text-base md:text-lg"></i>
           <span>Bekor qilish</span>
         </button>
       </template>
@@ -276,29 +288,3 @@ function resetNewClientForm() {
   });
 }
 </script>
-
-<style scoped>
-/* Add any additional custom styles here */
-@media (max-width: 640px) {
-  .text-4xl {
-    font-size: 2rem; /* Adjust for smaller screens */
-  }
-  .text-xl {
-    font-size: 1.25rem; /* Adjust for smaller screens */
-  }
-  .p-6 {
-    padding: 1.5rem; /* Adjust for smaller screens */
-  }
-  .px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  .py-2 {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-  .w-full {
-    width: 100%;
-  }
-}
-</style>
