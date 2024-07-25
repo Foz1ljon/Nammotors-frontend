@@ -11,7 +11,7 @@
         <i class="fi fi-sr-square-plus"></i>
       </button>
     </div>
-    <div class="py-3 w-full flex justify-between gap-4 ">
+    <div class="py-3 w-full flex justify-between gap-4">
       <input
         class="border dark:border-gray-600 rounded-md outline-none focus:border-slate-500 dark:focus:border-slate-400 w-full py-3 px-2 bg-white dark:bg-gray-700 text-black dark:text-white"
         type="text"

@@ -36,7 +36,7 @@
       <!-- User Logo Dropdown -->
       <div class="relative">
         <img
-          src="/logo.png"
+          :src="user ? user.image : '/logo.png'"
           alt="User Logo"
           class="w-10 h-10 rounded-full cursor-pointer"
           @click="toggleDropdown"
@@ -53,26 +53,9 @@
               <i
                 class="fi fi-ss-user w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
               ></i>
-              Profil
-            </li>
-            <li
-              class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-              @click="navigateTo('settings')"
-            >
-              <i
-                class="fi fi-sr-settings w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
-              ></i>
               Sozlamalar
             </li>
-            <li
-              class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-              @click="navigateTo('admin')"
-            >
-              <i
-                class="fi fi-ss-lock w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
-              ></i>
-              Admin Panel
-            </li>
+
             <li
               class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
               @click="logout"
@@ -95,14 +78,37 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
+import api from "@/api";
 
 const toast = useToast();
 const isDarkMode = ref(false);
 const dropdownOpen = ref(false);
 const router = useRouter();
+const user = ref();
+const token = localStorage.getItem("token");
+
+onMounted(async () => {
+  if (token) {
+    try {
+      const response = await api.get("/admins/auth/getme", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      user.value = response.data;
+    } catch (error) {
+      if (error.code == "ERR_NETWORK") return toast.warning("Tarmoq xatosi!");
+      // localStorage.removeItem("token");
+      toast.error("Ruxsati yo'q foydalanuvchi!");
+      console.log("error response", error.code);
+      // router.push("/login");
+    }
+  } else {
+    console.error("No token found");
+    // router.push("/login");
+  }
+});
 
 const toggleDarkMode = () => {
   isDarkMode.value = !isDarkMode.value;
@@ -131,7 +137,9 @@ const navigateTo = (path) => {
 };
 
 const logout = () => {
+  localStorage.removeItem("token");
   toast.success("Success logout");
+  router.push("/login");
   dropdownOpen.value = false;
 };
 </script>
