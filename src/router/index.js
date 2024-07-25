@@ -1,12 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "../pages/Dashboard.vue";
-import Products from "../views/Products.vue";
-import Admins from "../views/Admins.vue";
-import Categories from "../views/Categories.vue";
-import Clients from "../views/Clients.vue";
-import Contracts from "../views/Contracts.vue";
-import Home from "../views/Home.vue";
-import Profile from "../views/Profile.vue";
 
 const routes = [
   {
@@ -19,25 +11,25 @@ const routes = [
     path: "/",
     name: "dashboard",
     redirect: "/dashboard",
-    component: Dashboard,
+    component: () => import("@/pages/Dashboard.vue"),
     meta: { requiresAuth: true },
     children: [
       {
         path: "/profile",
         name: "my-profile",
-        component: Profile,
+        component: () => import("@/views/Profile.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/dashboard",
         name: "home-page",
-        component: Home,
+        component: () => import("@/views/Home.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/products",
         name: "product-list",
-        component: Products,
+        component: () => import("@/views/Products.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -61,7 +53,7 @@ const routes = [
       {
         path: "/admins",
         name: "admins-list",
-        component: Admins,
+        component: () => import("@/views/Admins.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -80,7 +72,7 @@ const routes = [
       {
         path: "/categories",
         name: "category-list",
-        component: Categories,
+        component: () => import("@/views/Categories.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -99,7 +91,7 @@ const routes = [
       {
         path: "/clients",
         name: "client-list",
-        component: Clients,
+        component: () => import("@/views/Clients.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -136,7 +128,7 @@ const routes = [
       {
         path: "/contracts",
         name: "contract-list",
-        component: Contracts,
+        component: () => import("@/views/Contracts.vue"),
         meta: { requiresAuth: true },
       },
     ],
@@ -144,7 +136,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
