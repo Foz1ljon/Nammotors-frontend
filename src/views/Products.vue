@@ -34,25 +34,13 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import ProductItem from "../components/ProductItem.vue";
 
 const isDarkMode = ref(false);
 
-watch(isDarkMode, (newVal) => {
-  isDarkMode.value = !isDarkMode.value;
-
-  if (newVal) {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("darkMode", "true");
-  } else {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("darkMode", "false");
-  }
-});
-
 // Initialize dark mode based on local storage
-if (localStorage.getItem("darkMode") === "true") {
+if (localStorage.getItem("darkMode") === true) {
   isDarkMode.value = true;
 }
 </script>

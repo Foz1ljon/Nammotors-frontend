@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted } from "vue";
 import api from "@/api";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
@@ -111,9 +111,14 @@ const props = defineProps({
 const emit = defineEmits(["update", "close"]);
 
 const toast = useToast();
-const form = ref({ ...props.user });
 const router = useRouter();
 const token = localStorage.getItem("token");
+
+const form = ref({
+  fname: "",
+  lname: "",
+  username: "",
+});
 const photoFile = ref(null);
 const previewPhoto = ref(null);
 
@@ -161,15 +166,14 @@ const closeModal = () => {
   emit("close");
 };
 
-watch(
-  () => props.user,
-  (newVal) => {
-    form.value = { ...newVal };
-    previewPhoto.value = newVal.image; // Agar rasmni ko'rsatmoqchi bo'lsangiz, yangilash
+onMounted(() => {
+  if (props.user) {
+    form.value = {
+      fname: props.user.fname || "",
+      lname: props.user.lname || "",
+      username: props.user.username || "",
+    };
+    previewPhoto.value = props.user.image || null;
   }
-);
+});
 </script>
-
-<style scoped>
-/* Tailwind CSS avtomatik ravishda ranglar va fon ranglarini boshqaradi */
-</style>
