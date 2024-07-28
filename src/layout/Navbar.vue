@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ dark: isDarkMode }"
-    class="min-h-screen bg-gray-50 dark:bg-gray-800 text-black dark:text-white"
+    class="min-h-screen bg-gray-50 dark:bg-gray-800 text-black dark:text-white transition-colors duration-1000"
   >
     <!-- Navbar -->
     <div
@@ -21,13 +21,13 @@
           @click="toggleDarkMode"
         >
           <div
-            class="toggle-line w-12 h-6 bg-gray-300 rounded-full"
-            :class="{ 'bg-gray-600': isDarkMode }"
+            class="w-12 h-6 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors duration-1000"
           ></div>
           <div
-            class="toggle-dot absolute w-6 h-6 bg-white rounded-full shadow-md transition-transform"
-            :style="{
-              transform: isDarkMode ? 'translateX(1.5rem)' : 'translateX(0)',
+            class="absolute w-6 h-6 bg-white dark:bg-gray-800 rounded-full shadow-md transition-transform duration-300"
+            :class="{
+              'translate-x-6': isDarkMode,
+              'translate-x-0': !isDarkMode,
             }"
           ></div>
         </div>
@@ -90,6 +90,7 @@ const router = useRouter();
 const user = ref();
 const token = localStorage.getItem("token");
 
+
 onMounted(async () => {
   if (token) {
     try {
@@ -99,10 +100,11 @@ onMounted(async () => {
       user.value = response.data;
     } catch (error) {
       if (error.code == "ERR_NETWORK") return toast.warning("Tarmoq xatosi!");
-      // localStorage.removeItem("token");
       toast.error("Ruxsati yo'q foydalanuvchi!");
       console.log("error response", error.code);
-      // router.push("/login");
+      localStorage.removeItem("token");
+
+      router.push("/login");
     }
   } else {
     console.error("No token found");
@@ -143,27 +145,3 @@ const logout = () => {
   dropdownOpen.value = false;
 };
 </script>
-
-<style scoped>
-button {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-button:hover {
-  background-color: #e5e7eb; /* Light gray background on hover */
-  color: #1f2937; /* Dark text color on hover */
-}
-
-/* Toggle Switch Styles */
-.toggle-line {
-  position: relative;
-  transition: background-color 0.3s;
-}
-
-.toggle-dot {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s;
-}
-</style>

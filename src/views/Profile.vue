@@ -92,7 +92,7 @@ import api from "@/api";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import EditUserModal from "@/components/EditAdminModal.vue"; // Import the modal component
+import EditUserModal from "@/components/UpdateProfile.vue";
 
 const router = useRouter();
 const toast = useToast();
@@ -106,7 +106,6 @@ const toggleClients = () => {
 };
 
 const editUser = () => {
-  // Handle user editing logic here
   showModal.value = true;
 };
 
@@ -133,7 +132,3 @@ onMounted(() => {
   fetchUserData();
 });
 </script>
-
-<style scoped>
-/* Additional custom styles if needed */
-</style>

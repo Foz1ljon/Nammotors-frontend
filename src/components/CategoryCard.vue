@@ -1,20 +1,48 @@
 <template>
   <div
-    class="bg-white dark:bg-gray-700 p-4 rounded-lg shadow transition-transform transform hover:scale-105"
+    class="bg-white dark:bg-gray-700 p-4 z-0 rounded-lg shadow transition-transform transform hover:scale-105 relative"
   >
     <div class="flex justify-between items-center">
-      <span class="text-sm text-gray-900 dark:text-white">
+      <span v-if="!isEditing" class="text-sm text-gray-900 dark:text-white">
         {{ category.name }}
       </span>
-      <div>
+      <div v-if="isEditing">
+        <form @submit.prevent="updateCategory">
+          <div class="mb-4 w-full">
+            <label class="block text-gray-700 dark:text-gray-300 mb-2">
+              Kategoriya Nomi:
+            </label>
+            <input
+              v-model="currentCategory.name"
+              type="text"
+              class="w-[60%] px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
+              required
+            />
+            <button
+              type="submit"
+              class="bg-blue-500 w-[15%] text-white px-3 py-2 rounded-md"
+            >
+              <i class="fi fi-sr-disk"></i>
+            </button>
+            <button
+              type="button"
+              @click="isEditing = false"
+              class="bg-gray-200 w-[15%] dark:bg-gray-600 text-gray-700 dark:text-white px-3 py-2 rounded-md"
+            >
+              <i class="fi fi-rr-document-circle-wrong"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div v-if="!isEditing" class="flex items-center">
         <button
-          @click="onEdit(category._id)"
+          @click="isEditing = true"
           class="text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 mr-2"
         >
           <i class="fi fi-rr-file-edit"></i>
         </button>
         <button
-          @click="onDelete(category._id)"
+          @click="onDelete"
           class="text-red-500 hover:text-red-700 dark:hover:text-red-400"
         >
           <i class="fi fi-br-trash"></i>
@@ -25,19 +53,59 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref } from "vue";
+import api from "@/api";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const props = defineProps({
   category: Object,
+  token: String,
+  refreshCategories: Function,
 });
 
-const onEdit = (index) => {
-  alert(index);
+const isEditing = ref(false);
+const currentCategory = ref({ ...props.category });
+
+const updateCategory = () => {
+  const hdrs = {
+    headers: {
+      Authorization: `Bearer ${props.token}`,
+    },
+  };
+  api
+    .patch(
+      `/category/${currentCategory.value._id}`,
+      currentCategory.value,
+      hdrs
+    )
+    .then(() => {
+      toast.success("Kategoriya yangilandi!");
+      props.refreshCategories(); // Call the function to refresh the categories list
+      isEditing.value = false;
+    })
+    .catch((err) => {
+      toast.error("Xatolik!");
+      console.log("err update", err);
+    });
 };
 
-const onDelete = (index) => {
-  alert(index);
+const onDelete = () => {
+  const hdrs = {
+    headers: {
+      Authorization: `Bearer ${props.token}`,
+    },
+  };
+  api
+    .delete(`/category/${props.category._id}`, hdrs)
+    .then((res) => {
+      toast.success("Kategoriya o`chirildi!");
+      props.refreshCategories(); // Call the function to refresh the categories list
+    })
+    .catch((err) => {
+      toast.error("Xatolik!");
+      console.log("err delete", err);
+    });
 };
 </script>
-
-<style scoped></style>

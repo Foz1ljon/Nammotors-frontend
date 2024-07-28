@@ -6,16 +6,8 @@
       Mijozlar
     </h1>
 
-    <!-- Search Input and Create Client Button -->
-    <div class="flex justify-between gap-4 mb-6">
-      <div class="flex flex-1 md:mb-0">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Mijozlarni qidirish..."
-          class="border p-3 rounded-lg w-full md:w-3/4 lg:w-1/2 xl:w-1/3 bg-white dark:bg-gray-800 text-black dark:text-white"
-        />
-      </div>
+    <!-- Create Client Button -->
+    <div class="flex justify-end mb-6">
       <button
         @click="showCreateModal = true"
         class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 flex items-center gap-2"
@@ -60,7 +52,7 @@
         <tbody
           class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
         >
-          <tr v-for="client in filteredClients" :key="client.phone_number">
+          <tr v-for="client in clients" :key="client.id">
             <td
               class="px-4 py-2 md:table-cell hidden text-sm text-gray-800 dark:text-gray-300"
             >
@@ -101,191 +93,118 @@
     </div>
 
     <!-- Create Client Modal -->
-    <Modal v-if="showCreateModal" @close="showCreateModal = false" class="z-50">
-      <template #header>
-        <h2
-          class="text-xl md:text-2xl font-semibold text-black dark:text-white"
-        >
-          Mijoz yaratish
-        </h2>
-      </template>
-      <template #body>
-        <form @submit.prevent="createClient">
-          <InputField
-            v-model="newClient.fname"
-            label="Ism"
-            placeholder="Mijoz ismi"
-          />
-          <InputField
-            v-model="newClient.phone_number"
-            label="Telefon raqami"
-            placeholder="Telefon raqami"
-          />
-          <SelectField
-            v-model="newClient.type"
-            label="Turi"
-            :options="clientTypes"
-          />
-          <InputField
-            v-model="newClient.admin"
-            label="Taklif qilgan"
-            placeholder="Admin ismi"
-          />
-        </form>
-      </template>
-      <template #footer>
-        <button
-          type="submit"
-          class="bg-gray-700 text-white px-4 py-2 rounded-lg mr-2 flex items-center gap-2"
-          @click="createClient"
-        >
-          <i class="fi fi-ss-disk text-lg"></i>
-          <span>Saqlash</span>
-        </button>
-        <button
-          @click="showCreateModal = false"
-          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <i class="fi fi-rr-delete-document text-lg"></i>
-          <span>Bekor qilish</span>
-        </button>
-      </template>
-    </Modal>
+    <CreateClientModal
+      v-if="showCreateModal"
+      :newClient="newClient"
+      :clientTypes="clientTypes"
+      @close="showCreateModal = false"
+      @createClient="createClient"
+    />
 
     <!-- Edit Client Modal -->
-    <Modal v-if="showEditModal" @close="showEditModal = false" class="z-50">
-      <template #header>
-        <h2
-          class="text-xl md:text-2xl font-semibold text-black dark:text-white"
-        >
-          Mijozni tahrirlash
-        </h2>
-      </template>
-      <template #body>
-        <form @submit.prevent="saveEdit">
-          <InputField
-            v-model="editClient.fname"
-            label="Ism"
-            placeholder="Mijoz ismi"
-          />
-          <InputField
-            v-model="editClient.phone_number"
-            label="Telefon raqami"
-            placeholder="Telefon raqami"
-          />
-          <SelectField
-            v-model="editClient.type"
-            label="Turi"
-            :options="clientTypes"
-          />
-          <InputField
-            v-model="editClient.admin"
-            label="Taklif qilgan"
-            placeholder="Admin ismi"
-          />
-        </form>
-      </template>
-      <template #footer>
-        <button
-          type="submit"
-          class="bg-gray-700 text-white px-4 py-2 rounded-lg mr-2 flex items-center gap-2"
-          @click="saveEdit"
-        >
-          <i class="fi fi-ss-disk text-lg"></i>
-          <span>Saqlash</span>
-        </button>
-        <button
-          @click="showEditModal = false"
-          class="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <i class="fi fi-rr-delete-document text-lg"></i>
-          <span>Bekor qilish</span>
-        </button>
-      </template>
-    </Modal>
+    <EditClientModal
+      v-if="showEditModal"
+      :editClient="editClient"
+      :clientTypes="clientTypes"
+      @close="showEditModal = false"
+      @saveEdit="saveEdit"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import CreateClientModal from "@/components/clients/CreateClientModal.vue";
+import EditClientModal from "@/components/clients/EditClientModal.vue";
+import api from "@/api"; // Adjust the path to your API file
 import { useToast } from "vue-toastification";
-import InputField from "@/components/InputField.vue";
-import SelectField from "@/components/SelectField.vue";
-import Modal from "@/components/Modal.vue";
 
 const toast = useToast();
 
-const searchQuery = ref("");
-
-const clients = reactive([
-  {
-    fname: "Shokirjon",
-    phone_number: "+998902234567",
-    type: "b2b",
-    admin: "Sobirjon",
-  },
-]);
-
+const clients = ref([]);
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
 const newClient = reactive({
   fname: "",
   phone_number: "",
   type: "",
-  admin: "",
+  location: "",
+  firma: "",
 });
-const editClient = reactive({});
-
-const clientTypes = ["b2b", "b2c", "b2g"];
-
-const filteredClients = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  return clients.filter((client) =>
-    Object.values(client).some((value) => value.toLowerCase().includes(query))
-  );
+const editClient = reactive({
+  fname: "",
+  phone_number: "",
+  type: "",
+  location: "",
+  firma: "",
 });
+const clientTypes = ref(["b2b", "b2c", "b2g"]); // Example client types
 
-function createClient() {
-  clients.push({ ...newClient });
-  showCreateModal.value = false;
-  resetNewClientForm();
-  toast.success("Client created successfully");
-}
+const token = localStorage.getItem("token");
+const hdrs = { headers: { Authorization: `Bearer ${token}` } };
 
-function removeClient(client) {
-  const index = clients.indexOf(client);
-  if (index !== -1) {
-    clients.splice(index, 1);
-    toast.warning("Client removed successfully");
+// Fetch clients from API
+const fetchClients = async () => {
+  try {
+    const response = await api.get("/clients/search?query=", hdrs);
+    clients.value = response.data;
+  } catch (error) {
+    toast.error("Mijozlarni olishda xatolik yuz berdi");
+    console.error("Mijozlarni olish xatosi:", error);
   }
-}
+};
 
-function openEditModal(client) {
-  editClient.value = { ...client };
+// Call fetchClients when component is mounted
+onMounted(() => {
+  fetchClients();
+});
+
+// Create client
+const createClient = async () => {
+  try {
+    await api.post("/clients", newClient, hdrs);
+    showCreateModal.value = false;
+    await fetchClients(); // Refresh the client list
+    toast.success("Mijoz muvaffaqiyatli yaratildi");
+  } catch (error) {
+    toast.error("Mijoz yaratishda xatolik yuz berdi");
+  }
+};
+
+// Remove client
+const removeClient = async (client) => {
+  try {
+    await api.delete(`/clients/${client.id}`, hdrs);
+    await fetchClients(); // Refresh the client list
+    toast.warning("Mijoz muvaffaqiyatli o'chirildi");
+  } catch (error) {
+    toast.error("Mijozni o'chirishda xatolik yuz berdi");
+  }
+};
+
+// Open edit modal
+const openEditModal = (client) => {
+  Object.assign(editClient, client); // Update editClient with client details
   showEditModal.value = true;
-}
+};
 
-function saveEdit() {
-  const index = clients.findIndex(
-    (c) => c.phone_number === editClient.value.phone_number
-  );
-  if (index !== -1) {
-    clients[index] = { ...editClient };
+// Save edit
+const saveEdit = async () => {
+  try {
+    const response = await api.patch(
+      `/clients/${editClient.id}`,
+      editClient,
+      hdrs
+    );
+    fetchClients();
     showEditModal.value = false;
-    toast.success("Client updated successfully");
+    toast.success("Mijoz muvaffaqiyatli yangilandi");
+  } catch (error) {
+    toast.error("Mijozni yangilashda xatolik yuz berdi");
+    console.error(
+      "Mijozni yangilash xatosi:",
+      error.response?.data || error.message
+    );
   }
-}
-
-function resetNewClientForm() {
-  Object.assign(newClient, {
-    fname: "",
-    phone_number: "",
-    type: "",
-    admin: "",
-  });
-}
+};
 </script>
-
-<style scoped>
-/* Add any additional custom styles here */
-</style>

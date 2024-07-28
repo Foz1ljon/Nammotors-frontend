@@ -11,7 +11,7 @@
 
     <!-- Navigation Links -->
     <div
-      class="flex w-full justify-between sm:flex-col sm:justify-evenly md:items-start items-center md:px-3 sm:gap-6 xl:text-2xl lg:text-xl sm:text-base text-3xl"
+      class="flex w-full justify-between sm:flex-col sm:justify-evenly md:items-start items-center md:px-3 sm:gap-6 xl:text-xl lg:text-lg sm:text-base text-2xl"
     >
       <router-link
         class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"

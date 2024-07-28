@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import UpdateModal from "../components/UpdateModal.vue";
 
 const routes = [
   {
@@ -35,21 +36,11 @@ const routes = [
       {
         path: "/products/:id",
         name: "product-update",
-        component: "",
+        component: UpdateModal,
         meta: { requiresAuth: true },
       },
-      {
-        path: "/product",
-        name: "product-create",
-        component: "",
-        meta: { requiresAuth: true },
-      },
-      {
-        path: "/product/:id",
-        name: "product-id",
-        component: "",
-        meta: { requiresAuth: true },
-      },
+
+    
       {
         path: "/admins",
         name: "admins-list",
