@@ -8,69 +8,36 @@
     >
       Nammotors
     </h1>
-
     <!-- Navigation Links -->
     <div
       class="flex w-full justify-between sm:flex-col sm:justify-evenly md:items-start items-center md:px-3 sm:gap-6 xl:text-xl lg:text-lg sm:text-base text-2xl"
     >
       <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
+        v-for="(item, i) in menu"
+        :key="i"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md"
         active-class="bg-gray-400"
-        to="/dashboard"
+        :to="item.to"
+        :class="
+          route.path == item.to ? '' : 'hover:bg-gray-500/50 hover:shadow-lg'
+        "
       >
-        <i class="fi fi-ss-home"></i>
-        <p class="sm:block hidden">Dashboard</p>
-      </router-link>
-
-      <!-- Products Link -->
-      <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
-        active-class="bg-gray-400"
-        to="/products"
-      >
-        <i class="fi fi-ss-engine"></i>
-        <p class="sm:block hidden">Mahsulotlar</p>
-      </router-link>
-
-      <!-- Categories Link -->
-      <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
-        active-class="bg-gray-400"
-        to="/categories"
-      >
-        <i class="fi fi-sr-category"></i>
-        <p class="sm:block hidden">Kategoriyalar</p>
-      </router-link>
-
-      <!-- Clients Link -->
-      <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
-        active-class="bg-gray-400"
-        to="/clients"
-      >
-        <i class="fi fi-sr-users"></i>
-        <p class="sm:block hidden">Mijozlar</p>
-      </router-link>
-
-      <!-- Admins Link -->
-      <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
-        active-class="bg-gray-400"
-        to="/admins"
-      >
-        <i class="fi fi-ss-admin-alt"></i>
-        <p class="sm:block hidden">Adminlar</p>
-      </router-link>
-
-      <!-- Contracts Link -->
-      <router-link
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md hover:shadow-lg"
-        active-class="bg-gray-400"
-        to="/contracts"
-      >
-        <i class="fi fi-ss-diploma"></i>
-        <p class="sm:block hidden">Shartnomalar</p>
+        <i :class="item.icon"></i>
+        <p class="sm:block hidden">{{ item.name }}</p>
       </router-link>
     </div>
   </div>
 </template>
+<script setup>
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const menu = [
+  { to: "/dashboard", name: "Dashboard", icon: "fi fi-ss-home" },
+  { to: "/products", name: "Mahsulotlar", icon: "fi fi-ss-engine" },
+  { to: "/categories", name: "Kategoriyalar", icon: "fi fi-sr-category" },
+  { to: "/clients", name: "Mijozlar", icon: "fi fi-sr-users" },
+  { to: "/admins", name: "Adminlar", icon: "fi fi-ss-admin-alt" },
+  { to: "/contracts", name: "Shartnomalar", icon: "fi fi-ss-diploma" },
+];
+</script>
