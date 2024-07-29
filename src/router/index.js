@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import UpdateModal from "../components/UpdateModal.vue";
 
 const routes = [
   {
@@ -21,10 +20,17 @@ const routes = [
         component: () => import("@/views/Profile.vue"),
         meta: { requiresAuth: true },
       },
+
       {
         path: "/dashboard",
         name: "home-page",
         component: () => import("@/views/Home.vue"),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "/product",
+        name: "product-create",
+        component: () => import("@/views/CreateAdmin.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -36,11 +42,10 @@ const routes = [
       {
         path: "/products/:id",
         name: "product-update",
-        component: UpdateModal,
+        component: () => import("@/views/UpdateProduct.vue"),
         meta: { requiresAuth: true },
       },
 
-    
       {
         path: "/admins",
         name: "admins-list",
@@ -55,12 +60,6 @@ const routes = [
       },
 
       {
-        path: "/admin/:id",
-        name: "admin-id",
-        component: "",
-        meta: { requiresAuth: true },
-      },
-      {
         path: "/categories",
         name: "category-list",
         component: () => import("@/views/Categories.vue"),
@@ -69,12 +68,6 @@ const routes = [
       {
         path: "/categoris/:id",
         name: "category-update",
-        component: "",
-        meta: { requiresAuth: true },
-      },
-      {
-        path: "/categori/:id",
-        name: "category-id",
         component: "",
         meta: { requiresAuth: true },
       },
@@ -88,19 +81,14 @@ const routes = [
       {
         path: "/clients/:id",
         name: "client-update",
-        component: "",
+        component: () => import("@/views/UpdateClient.vue"),
         meta: { requiresAuth: true },
       },
-      {
-        path: "/client/:id",
-        name: "client-id",
-        component: "",
-        meta: { requiresAuth: true },
-      },
+
       {
         path: "/client",
         name: "client-create",
-        component: "",
+        component: () => import("@/views/CreateClient.vue"),
         meta: { requiresAuth: true },
       },
 
@@ -110,12 +98,7 @@ const routes = [
         component: "",
         meta: { requiresAuth: true },
       },
-      {
-        path: "/contract/:id",
-        name: "contract-id",
-        component: "",
-        meta: { requiresAuth: true },
-      },
+
       {
         path: "/contracts",
         name: "contract-list",

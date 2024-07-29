@@ -101,53 +101,11 @@
         </div>
       </div>
     </div>
-
-    <!-- Create Admin Modal -->
-    <div
-      v-if="showCreateModal"
-      class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div
-        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg relative"
-      >
-        <button
-          @click="showCreateModal = false"
-          class="absolute top-2 right-2 text-gray-500 dark:text-gray-300"
-        >
-          <i class="fi fi-sr-x"></i>
-        </button>
-        <CreateAdmin @close="showCreateModal = false" @refresh="fetchAdmins" />
-      </div>
-    </div>
-
-    <!-- Update Admin Modal -->
-    <div
-      v-if="showUpdateModal"
-      class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div
-        class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-lg relative"
-      >
-        <button
-          @click="showUpdateModal = false"
-          class="absolute top-2 right-2 text-gray-500 dark:text-gray-300"
-        >
-          <i class="fi fi-sr-x"></i>
-        </button>
-        <UpdateAdmin
-          :adminData="selectedAdmin"
-          @close="showUpdateModal = false"
-          @refresh="fetchAdmins"
-        />
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import CreateAdmin from "@/components/CreateAdmin.vue";
-import UpdateAdmin from "@/components/UpdateAdmin.vue";
 import api from "@/api";
 import { useToast } from "vue-toastification";
 
@@ -155,9 +113,7 @@ const toast = useToast();
 const token = localStorage.getItem("token");
 
 const showCreateModal = ref(false);
-const showUpdateModal = ref(false);
 const showClientDropdown = ref(null);
-const selectedAdmin = ref(null);
 const searchTerm = ref("");
 const adminslist = ref([]);
 
@@ -184,10 +140,7 @@ function openCreateModal() {
   showCreateModal.value = true;
 }
 
-function openUpdateModal(admin) {
-  selectedAdmin.value = { ...admin };
-  showUpdateModal.value = true;
-}
+function openUpdateModal(admin) {}
 
 function deleteAdmin(index) {
   const adminToDelete = adminslist.value[index];
@@ -209,12 +162,4 @@ function toggleClientDropdown(index) {
 const filteredAdminList = computed(() => adminslist.value);
 </script>
 
-<style scoped>
-/* Additional styling for responsiveness */
-@media (max-width: 768px) {
-  /* Adjust modal width and positioning for mobile */
-  .modal-content {
-    width: 90%;
-  }
-}
-</style>
+<style scoped></style>
