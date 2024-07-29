@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ dark: isDarkMode }"
-    class="min-h-screen bg-gray-50 dark:bg-gray-800 text-black dark:text-white transition-colors duration-1000"
+    class="min-h-screen bg-gray-50 dark:bg-gray-800 text-black dark:text-white transition-colors duration-300"
   >
     <!-- Navbar -->
     <div
@@ -21,7 +21,7 @@
           @click="toggleDarkMode"
         >
           <div
-            class="w-12 h-6 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors duration-1000"
+            class="w-12 h-6 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors duration-300"
           ></div>
           <div
             class="absolute w-6 h-6 bg-white dark:bg-gray-800 rounded-full shadow-md transition-transform duration-300"

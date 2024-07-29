@@ -25,16 +25,16 @@
       @click="closeModal"
     >
       <div
-        class="bg-white dark:bg-gray-900 p-6 rounded-lg relative shadow-lg max-w-lg w-full"
+        class="bg-white dark:bg-gray-900 p-6 rounded-lg relative shadow-lg flex flex-col justify-center items-center max-w-sm w-full"
         @click.stop
       >
         <img
           :src="data.img"
           alt="Item Image"
-          class="w-full h-64 object-cover rounded-lg"
+          class="w-64 h-64 object-cover rounded-lg"
         />
         <button
-          class="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          class="absolute top-4 right-4 bg-white dark:bg-gray-700 dark:text-white text-black p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
           @click="closeModal"
         >
           &times;

@@ -13,71 +13,30 @@
     <div
       class="grid sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 grid-cols-1 gap-6"
     >
-      <div
-        class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center"
+      <router-link
+        v-for="(item, i) in menu"
+        :key="i"
+        :to="item.to"
+        class="bg-white hover:bg-gray-200 dark:bg-gray-700 hover:dark:bg-gray-800 shadow rounded-lg p-4 flex items-center"
       >
         <div
-          class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mr-4"
+          :class="item.bg"
+          class="w-12 h-12 text-white rounded-full flex items-center justify-center mr-4"
         >
-          <i class="fi fi-sr-admin-alt text-3xl"></i>
-          <!-- Uicons class for admins -->
+          <i :class="item.icon"></i>
+          <!-- Uicons class for  items -->
         </div>
         <div>
-          <h3 class="text-xl font-semibold">Admins</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ totalAdmins }}</p>
+          <h3 class="text-xl font-semibold">{{ item.name }}</h3>
+          <p class="text-gray-600 dark:text-gray-300">{{ item.stat }}</p>
         </div>
-      </div>
-
-      <div
-        class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center"
-      >
-        <div
-          class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mr-4"
-        >
-          <i class="fi fi-sr-users text-3xl"></i>
-          <!-- Uicons class for clients -->
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Clients</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ totalClients }}</p>
-        </div>
-      </div>
-
-      <div
-        class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center"
-      >
-        <div
-          class="w-12 h-12 bg-red-500 text-white rounded-full flex items-center justify-center mr-4"
-        >
-          <i class="fi fi-sr-box-alt text-3xl"></i>
-          <!-- Uicons class for products -->
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Products</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ totalProducts }}</p>
-        </div>
-      </div>
-
-      <div
-        class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex items-center"
-      >
-        <div
-          class="w-12 h-12 bg-yellow-500 text-white rounded-full flex items-center justify-center mr-4"
-        >
-          <i class="fi fi-sr-diploma text-3xl"></i>
-          <!-- Uicons class for contracts -->
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Contracts</h3>
-          <p class="text-gray-600 dark:text-gray-300">{{ totalContracts }}</p>
-        </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted } from "vue";
 import api from "@/api";
 
 const totalAdmins = ref(0);
@@ -86,11 +45,42 @@ const totalProducts = ref(0);
 const totalContracts = ref(0);
 const token = localStorage.getItem("token");
 
+const menu = [
+  {
+    name: "Adminlar",
+    icon: "fi fi-sr-admin-alt text-3xl",
+    to: "/admins",
+    bg: "bg-blue-500",
+    stat: totalAdmins,
+  },
+  {
+    name: "Mijozlar",
+    icon: "fi fi-sr-users text-3xl",
+    to: "/clients",
+    bg: "bg-green-500",
+    stat: totalClients,
+  },
+  {
+    name: "Mahsulotlar",
+    icon: "fi fi-sr-box-alt text-3xl",
+    to: "/products",
+    bg: "bg-red-500",
+    stat: totalProducts,
+  },
+  {
+    name: "Shartnomalar",
+    icon: "fi fi-sr-diploma text-3xl",
+    to: "/contracts",
+    bg: "bg-yellow-500",
+    stat: totalContracts,
+  },
+];
+
 const hdrs = {
   headers: { Authorization: `Bearer ${token}` },
 };
 
-onBeforeMount(() => {
+onMounted(() => {
   api
     .get("/admins/search", hdrs)
     .then((res) => {

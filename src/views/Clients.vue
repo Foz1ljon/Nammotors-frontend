@@ -69,7 +69,7 @@
             <td
               class="px-4 md:table-cell hidden py-2 text-sm text-gray-800 dark:text-gray-300"
             >
-              {{ client.admin }}
+              @{{ client.admin.username }}
             </td>
             <td
               class="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 flex space-x-2"
@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 
 import api from "@/api"; // Adjust the path to your API file
 import { useToast } from "vue-toastification";

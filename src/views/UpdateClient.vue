@@ -10,7 +10,7 @@
       @submit.prevent="updateClient"
       class="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
-      <!-- Name Input -->
+      <!-- Ism Input -->
       <input
         type="text"
         v-model="form.fname"
@@ -18,7 +18,7 @@
         class="p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-800 text-black dark:text-white"
       />
 
-      <!-- Phone Number Input -->
+      <!-- Telefon Raqam Input -->
       <input
         type="text"
         v-model="form.phone_number"
@@ -26,7 +26,7 @@
         class="p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-800 text-black dark:text-white"
       />
 
-      <!-- Firm Input -->
+      <!-- Firma Input -->
       <input
         type="text"
         v-model="form.firma"
@@ -34,7 +34,7 @@
         class="p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-800 text-black dark:text-white"
       />
 
-      <!-- Location Input -->
+      <!-- Manzil Input -->
       <input
         type="text"
         v-model="form.location"
@@ -42,7 +42,7 @@
         class="p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-800 text-black dark:text-white"
       />
 
-      <!-- Dropdown Select Type -->
+      <!-- Dropdown Tanlash -->
       <div class="md:col-span-2">
         <label
           for="type"
@@ -61,13 +61,33 @@
           </option>
         </select>
       </div>
-      <button type="submit">Add</button>
+
+      <!-- Tugmalar -->
+      <div class="md:col-span-2 flex gap-4 mt-4">
+        <button
+          type="submit"
+          class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-indigo-700 transition-colors"
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          @click="cancelUpdate"
+          class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   </div>
 </template>
+
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import api from "@/api";
+import { useRoute, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+
 const types = ["b2b", "b2c", "b2g"];
 
 const form = reactive({
@@ -78,7 +98,33 @@ const form = reactive({
   type: "",
 });
 
+const route = useRoute();
+const router = useRouter();
+const id = route.params.id;
+const toast = useToast();
+const token = localStorage.getItem("token");
+const hdrs = { headers: { Authorization: `Bearer ${token}` } };
+
+onMounted(() => {
+  api.get(`clients/${id}`, hdrs).then((res) => {
+    Object.assign(form, res.data);
+    console.log(form);
+  });
+});
+
 const updateClient = () => {
-  alert("succes");
+  api
+    .put(`/clients/${id}`, form, hdrs)
+    .then((res) => {
+      toast.success("Mijoz ma'lumotlari yangilandi");
+      router.push("/clients");
+    })
+    .catch((err) => {
+      toast.error("Xatolik!");
+    });
+};
+
+const cancelUpdate = () => {
+  router.push("/clients");
 };
 </script>
