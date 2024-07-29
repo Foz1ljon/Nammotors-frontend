@@ -53,7 +53,7 @@ import api from "@/api";
 const toast = useToast();
 
 const data = reactive({
-  username: "foziljon",
+  username: "fozil",
   password: "fozil0990",
 });
 
