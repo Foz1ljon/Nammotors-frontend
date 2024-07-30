@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run build
+      - name: Build project
         run: npm run build
 
       - name: Install sshpass
@@ -36,13 +36,15 @@ jobs:
           USER: ${{ secrets.USER }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          # Deploying files to the server
+          # Upload the dist directory to the server
           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend/dist
+
+          # Upload server.js file to the server
           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no ./server.js $USER@$SERVER:Nammotors-frontend/
 
-          # SSH into the server and perform deployment tasks
+          # SSH into the server to set up the environment and start the server
           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
-            # Navigate to deployment directory
+            # Change to the deployment directory
             cd Nammotors-frontend
 
             # Install Node.js dependencies (if necessary)
@@ -51,6 +53,6 @@ jobs:
             # Start the server using PM2
             pm2 start server.js --name vue-app
 
-            # Ensure PM2 is running after deployment
+            # Save PM2 process list and environment
             pm2 save
           EOF
