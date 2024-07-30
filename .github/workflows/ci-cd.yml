@@ -36,4 +36,21 @@ jobs:
           USER: ${{ secrets.USER }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER "cd Nammotors-frontend  && git pull && npm install && npm run build && pm2 start ecosystem.config.cjs"
+          # Deploying files to the server
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:/path/to/your/deployment/directory
+
+          # SSH into the server and perform deployment tasks
+          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
+            # Navigate to deployment directory
+            cd /path/to/your/deployment/directory
+
+            # Install dependencies and build (if necessary)
+            npm install
+            npm run build
+
+            # Start the server using PM2
+            pm2 start server.js --name vue-app
+
+            # Ensure PM2 is running after deployment
+            pm2 save
+          EOF
