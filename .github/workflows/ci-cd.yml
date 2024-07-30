@@ -38,7 +38,7 @@ jobs:
         run: |
           # Deploying files to the server
           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend/dist
-          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no ./server.js $USER@$SERVER:Nammotors-frontend/
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no server.js $USER@$SERVER:Nammotors-frontend/
 
           # SSH into the server and perform deployment tasks
           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
@@ -49,7 +49,7 @@ jobs:
             npm install
 
             # Start the server using PM2
-            pm2 start server.js --name vue-app
+            pm2 start server.js --name vue-app --watch
 
             # Ensure PM2 is running after deployment
             pm2 save
