@@ -1,58 +1,58 @@
-name: Vue 3 CI/CD Pipeline
+# name: Vue 3 CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Set up Node.js 18
-        uses: actions/setup-node@v2
-        with:
-          node-version: "18"
+#       - name: Set up Node.js 18
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: "18"
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Build project
-        run: npm run build
+#       - name: Build project
+#         run: npm run build
 
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
+#       - name: Install sshpass
+#         run: sudo apt-get install -y sshpass
 
-      - name: Deploy to server
-        env:
-          SERVER: ${{ secrets.SERVER }}
-          USER: ${{ secrets.USER }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-        run: |
-          # Upload the dist directory to the server
-          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend/dist
+#       - name: Deploy to server
+#         env:
+#           SERVER: ${{ secrets.SERVER }}
+#           USER: ${{ secrets.USER }}
+#           PASSWORD: ${{ secrets.PASSWORD }}
+#         run: |
+#           # Upload the dist directory to the server
+#           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend/dist
 
-          # Upload server.js file to the server
-          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no ./server.js $USER@$SERVER:Nammotors-frontend/
+#           # Upload server.js file to the server
+#           sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no ./server.js $USER@$SERVER:Nammotors-frontend/
 
-          # SSH into the server to set up the environment and start the server
-          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
-            # Change to the deployment directory
-            cd Nammotors-frontend
+#           # SSH into the server to set up the environment and start the server
+#           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
+#             # Change to the deployment directory
+#             cd Nammotors-frontend
 
-            # Install Node.js dependencies (if necessary)
-            npm install
+#             # Install Node.js dependencies (if necessary)
+#             npm install
 
-            # Start the server using PM2
-            pm2 start server.js --name vue-app
+#             # Start the server using PM2
+#             pm2 start server.js --name vue-app
 
-            # Save PM2 process list and environment
-            pm2 save
-          EOF
+#             # Save PM2 process list and environment
+#             pm2 save
+#           EOF
