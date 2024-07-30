@@ -37,16 +37,16 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           # Deploying files to the server
-          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend/dist
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no ./server.js $USER@$SERVER:Nammotors-frontend/
 
           # SSH into the server and perform deployment tasks
           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
             # Navigate to deployment directory
-            cd /path/to/your/deployment/directory
+            cd Nammotors-frontend
 
-            # Install dependencies and build (if necessary)
+            # Install Node.js dependencies (if necessary)
             npm install
-            npm run build
 
             # Start the server using PM2
             pm2 start server.js --name vue-app
