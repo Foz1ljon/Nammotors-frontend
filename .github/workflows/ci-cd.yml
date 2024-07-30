@@ -37,7 +37,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           # Deploying files to the server
-          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:/path/to/your/deployment/directory
+          sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r ./dist $USER@$SERVER:Nammotors-frontend
 
           # SSH into the server and perform deployment tasks
           sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no $USER@$SERVER << 'EOF'
