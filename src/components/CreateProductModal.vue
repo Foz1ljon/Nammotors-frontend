@@ -1,155 +1,220 @@
 <template>
   <div
     v-if="show"
-    class="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50"
+    class="fixed inset-0 flex items-center p-8 justify-center z-50 bg-gray-800 bg-opacity-50"
     @click.self="handleClose"
   >
     <div
-      class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-lg relative max-w-4xl w-full"
+      class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg relative max-w-4xl w-full"
     >
-      <!-- Yopish tugmasi -->
+      <!-- Close Button -->
       <button
         @click="handleClose"
-        class="absolute top-3 right-3 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 text-xl"
+        class="absolute top-3 right-3 dark:bg-gray-700 bg-gray-300 px-2 pb-0.5 rounded-full text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-100 text-xl"
+        aria-label="Close"
       >
         &times;
       </button>
 
-      <!-- Forma -->
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <!-- Marka va KWT -->
-        <div class="flex flex-wrap gap-4">
+      <!-- Form -->
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <!-- Brand and KWT -->
+        <div class="flex flex-wrap gap-6">
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Marka:</label
+            <label
+              for="brand"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              Brend:
+            </label>
             <input
+              id="brand"
               v-model="productData.marka"
               type="text"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="Brend nomi"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >KWT:</label
+            <label
+              for="kwt"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              KWT:
+            </label>
             <input
+              id="kwt"
               v-model="productData.kwt"
               type="number"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="KVT qiymati"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
         </div>
 
-        <!-- Aylantiruvchi, Narx va Son -->
-        <div class="flex flex-wrap gap-4">
+        <!-- Turnover, Price, and Quantity -->
+        <div class="flex flex-wrap gap-6">
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Aylantiruvchi:</label
+            <label
+              for="turnover"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              Turnover:
+            </label>
             <input
+              id="turnover"
               v-model="productData.turnover"
               type="number"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="Aylanish"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Narx:</label
+            <label
+              for="price"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              Narx:
+            </label>
             <input
+              id="price"
               v-model="productData.price"
               type="number"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="Narx"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Son:</label
+            <label
+              for="count"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              Soni:
+            </label>
             <input
+              id="count"
               v-model="productData.count"
               type="number"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="Soni"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
         </div>
 
-        <!-- Rasm -->
+        <!-- Image Upload -->
         <div>
-          <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-            >Rasm:</label
+          <label
+            for="image"
+            class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
           >
-          <input
-            ref="fileInput"
-            type="file"
-            @change="handleFileChange"
-            class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
-          />
-          <div
-            v-if="productData.img"
-            class="mt-3 w-28 h-28 overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700"
-          >
-            <img
-              :src="productData.img"
-              alt="Mahsulot rasmi"
-              class="w-full h-full object-cover"
+            Rasm:
+          </label>
+          <div class="flex items-center">
+            <input
+              id="image"
+              ref="fileInput"
+              type="file"
+              @change="handleFileChange"
+              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm file:bg-gray-200 file:dark:bg-gray-700 file:border-none file:rounded-md file:text-sm file:font-medium"
+              aria-label="Upload image"
             />
+            <div
+              v-if="productData.img"
+              class="ml-4 w-28 h-28 overflow-hidden rounded-md bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600"
+            >
+              <img
+                :src="productData.img"
+                alt="Mahsulot rasmi"
+                class="w-full h-full object-cover"
+              />
+            </div>
           </div>
         </div>
 
-        <!-- Kategoriya va Manzil -->
-        <div class="flex flex-wrap gap-4">
+        <!-- Category and Location -->
+        <div class="flex flex-wrap gap-6">
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Kategoriya:</label
+            <label
+              for="category"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
-            <select
-              v-model="productData.category"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
-              required
-            >
-              <option
-                v-for="category in categories"
-                :key="category._id"
-                :value="category._id"
+              Kategoriya:
+            </label>
+            <div class="relative">
+              <select
+                id="category"
+                v-model="productData.category"
+                class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600 appearance-none"
+                required
               >
-                {{ category.name }}
-              </option>
-            </select>
+                <option value="" disabled selected>Kategoriya tanlang</option>
+                <option
+                  v-for="category in categories"
+                  :key="category._id"
+                  :value="category._id"
+                >
+                  {{ category.name }}
+                </option>
+              </select>
+              <div
+                class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
+              >
+                <svg
+                  class="w-5 h-5 text-gray-500 dark:text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
           <div class="flex-1">
-            <label class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
-              >Manzil:</label
+            <label
+              for="location"
+              class="block text-gray-700 dark:text-gray-300 mb-1 text-sm"
             >
+              Joylashuv:
+            </label>
             <input
+              id="location"
               v-model="productData.location"
               type="text"
-              class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm"
+              placeholder="Joylashuv"
+              class="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 text-sm focus:border-blue-500 dark:focus:border-blue-600"
               required
             />
           </div>
         </div>
 
-        <!-- Tugmalar -->
-        <div class="flex justify-end space-x-3">
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-4">
           <button
             type="button"
             @click="handleClose"
-            class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white px-3 py-1 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 text-sm"
+            class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 text-sm"
           >
             Bekor qilish
           </button>
           <button
             type="submit"
-            class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 text-sm"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm"
+            :disabled="isLoading"
           >
-            Saqlash
+            <span v-if="isLoading">Yuklanmoqda...</span>
+            <span v-else>Saqlash</span>
           </button>
         </div>
       </form>
@@ -159,10 +224,8 @@
 
 <script setup>
 import { ref, onMounted, defineProps, defineEmits } from "vue";
-import api from "@/api";
-import { useToast } from "vue-toastification";
+import { useProductStore } from "@/store/productStore"; // Updated import path
 
-const toast = useToast();
 const props = defineProps({
   show: Boolean,
   close: Function,
@@ -182,7 +245,8 @@ const productData = ref({
 });
 
 const categories = ref([]);
-const token = localStorage.getItem("token");
+const isLoading = ref(false);
+const productStore = useProductStore();
 
 const handleFileChange = (event) => {
   const file = event.target.files[0];
@@ -193,33 +257,25 @@ const handleFileChange = (event) => {
 };
 
 const handleSubmit = async () => {
+  isLoading.value = true; // Set loading to true
+  const formData = new FormData();
+  Object.entries(productData.value).forEach(([key, value]) => {
+    if (key === "photo" && value) {
+      formData.append("photo", value);
+    } else if (key !== "img") {
+      formData.append(key, value);
+    }
+  });
+
   try {
-    const formData = new FormData();
-    Object.entries(productData.value).forEach(([key, value]) => {
-      if (key === "photo" && value) {
-        formData.append("photo", value);
-      } else if (key !== "img") {
-        formData.append(key, value);
-      }
-    });
-
-    await api.post("/product", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    toast.success("Mahsulot yaratildi");
-
+    await productStore.createProduct(formData); // Use store action
     resetForm();
-    handleClose(); // Modalni yopish uchun handleClose funksiyasidan foydalaning
+    handleClose(); // Close the modal using handleClose
     emit("create");
   } catch (err) {
-    toast.error("Xatolik!");
-    console.error(
-      "API xatosi:",
-      err.response ? err.response.data : err.message
-    );
+    console.error("API Error:", err.response ? err.response.data : err.message);
+  } finally {
+    isLoading.value = false; // Set loading to false
   }
 };
 
@@ -238,17 +294,15 @@ const resetForm = () => {
 };
 
 const handleClose = () => {
-  props.close(); // Modalni yopish uchun ota-onaning komponentiga xabar bering
+  props.close(); // Notify the parent component to close the modal
 };
 
 onMounted(async () => {
   try {
-    const res = await api.get("/category", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    categories.value = res.data;
+    await productStore.fetchCategories(); // Use store action
+    categories.value = productStore.categories; // Load categories from store
   } catch (err) {
-    console.error("Kategoriya olishda xatolik:", err);
+    console.error("Error fetching categories:", err);
   }
 });
 </script>

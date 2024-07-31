@@ -18,17 +18,19 @@
 
       <div class="flex items-center space-x-4 mb-4">
         <img
-          v-if="user.image"
-          :src="user.image"
+          :src="
+            profileStore?.user?.image ? profileStore.user.image : '/logo.png'
+          "
           alt="User Image"
           class="w-16 h-16 rounded-full object-cover"
         />
         <div>
           <h2 class="text-xl font-bold text-gray-900 dark:text-gray-200">
-            {{ user.fname }} {{ user.lname }}
+            {{ profileStore?.user?.fname || test }}
+            {{ profileStore?.user?.lname || test2 }}
           </h2>
           <p class="text-gray-700 dark:text-gray-400">
-            {{ user.username }}
+            {{ profileStore?.user?.username || 22 }}
           </p>
         </div>
       </div>
@@ -37,7 +39,9 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
           User ID
         </h3>
-        <p class="text-gray-600 dark:text-gray-300">{{ user._id }}</p>
+        <p class="text-gray-600 dark:text-gray-300">
+          {{ profileStore?.user?._id || 22 }}
+        </p>
       </div>
 
       <!-- Clients Toggle Button -->
@@ -56,13 +60,13 @@
           Mijozlar
         </h4>
 
-        <div class="py-5" v-if="user.clients.length == 0">
+        <div class="py-5" v-if="profileStore?.user?.clients?.length === 0">
           Hozirda mijozlari mavjud emas...
         </div>
 
         <ul class="list-disc pl-5">
           <li
-            v-for="client in user.clients"
+            v-for="client in profileStore.user.clients"
             :key="client._id"
             class="text-gray-700 dark:text-gray-400 mb-2"
           >
@@ -80,7 +84,7 @@
     <EditUserModal
       v-if="showModal"
       :isVisible="showModal"
-      :user="user"
+      :user="profileStore.user"
       @update="fetchUserData"
       @close="showModal = false"
     />
@@ -88,18 +92,17 @@
 </template>
 
 <script setup>
-import api from "@/api";
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
 import EditUserModal from "@/components/UpdateProfile.vue";
+import { useProfileStore } from "../store/profileStore";
 
-const router = useRouter();
-const toast = useToast();
-const token = localStorage.getItem("token");
-const user = ref({});
 const isShowClients = ref(false);
 const showModal = ref(false);
+const profileStore = useProfileStore();
+
+onMounted(() => {
+  profileStore.fetchUser();
+});
 
 const toggleClients = () => {
   isShowClients.value = !isShowClients.value;
@@ -108,27 +111,4 @@ const toggleClients = () => {
 const editUser = () => {
   showModal.value = true;
 };
-
-const fetchUserData = async () => {
-  if (token) {
-    try {
-      const response = await api.get("/admins/auth/getme", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      user.value = response.data;
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      localStorage.removeItem("token");
-      toast.error("Ruxsati yo'q foydalanuvchi!");
-      router.push({ name: "auth" });
-    }
-  } else {
-    console.error("No token found");
-    router.push({ name: "auth" });
-  }
-};
-
-onMounted(() => {
-  fetchUserData();
-});
 </script>

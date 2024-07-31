@@ -17,46 +17,31 @@
     </div>
 
     <!-- Contract Card -->
-    <ContractCard v-for="item in 5" :key="item" :contract="contract" />
+    <ContractCard v-for="item in contract" :key="item" :contract="item" />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import ContractCard from "@/components/ContractCardItem.vue";
+import api from "@/api";
 
-const contract = ref({
-  product: [
-    {
-      _id: "66a0076c8ff21ea89e714550",
-      img: "http://res.cloudinary.com/dc28msg2s/image/upload/v1721763692/hjne1s2jt3izu8fhjvdx.png",
-      marka: "salom3945g",
-      price: "5600",
-      kwt: "325kw",
-      turnover: "444",
-    },
-    {
-      _id: "66a007908ff21ea89e714554",
-      img: "http://res.cloudinary.com/dc28msg2s/image/upload/v1721763727/kis3z41xsugmj2n34fsa.png",
-      marka: "salom3945g",
-      price: "5600",
-      kwt: "325kw",
-      turnover: "444",
-    },
-  ],
-  vendor: {
-    fname: "Foziljon",
-    username: "fozil",
-  },
-  client: {
-    fname: "Firdavs",
-    phone_number: "+998912345678",
-  },
-  discount: 5,
-  price: 10640,
-  paytype: "card",
-  createAt: "2024-07-25T04:43:15.217Z",
-});
+const token = localStorage.getItem("token");
+
+const contract = ref();
+
+const fetchContracts = () => {
+  api
+    .get("/contract", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      console.log(res.data);
+      contract.value = res.data;
+    });
+};
+
+onMounted(fetchContracts);
 
 const createContract = () => {
   // Logic for creating a contract

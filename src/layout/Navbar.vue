@@ -9,7 +9,9 @@
     >
       <!-- Dark Mode Toggle -->
       <label class="flex items-center cursor-pointer">
-        <span class="mr-3 text-black dark:text-white">Dark Mode</span>
+        <span class="mr-3 text-black dark:text-white sm:block hidden"
+          >Dark Mode</span
+        >
         <input
           type="checkbox"
           v-model="isDarkMode"
@@ -33,39 +35,60 @@
         </div>
       </label>
 
-      <!-- User Logo Dropdown -->
-      <div class="relative">
-        <img
-          :src="user ? user.image : '/logo.png'"
-          alt="User Logo"
-          class="w-10 h-10 rounded-full cursor-pointer"
-          @click="toggleDropdown"
-        />
-        <div
-          v-if="dropdownOpen"
-          class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg z-50"
+      <div class="flex items-center gap-4 px-5">
+        <router-link
+          to="/cart"
+          class="px-3 py-1 rounded-full bg-gray-300 dark:bg-gray-600 dark:text-white text-black relative"
         >
-          <ul class="py-2">
-            <li
-              class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-              @click="navigateTo('profile')"
-            >
-              <i
-                class="fi fi-ss-user w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
-              ></i>
-              Sozlamalar
-            </li>
+          <div class="mt-1">
+            <i class="fi fi-sr-shopping-cart text-2xl"></i>
+          </div>
+          <p
+            :class="cartCount == 0 ? 'hidden' : ''"
+            class="absolute text-sm bg-red-500 text-white py-0.5 px-1 rounded-full -top-1 -right-2"
+          >
+            {{ cartCount }}
+          </p>
+        </router-link>
 
-            <li
-              class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-              @click="logout"
-            >
-              <i
-                class="fi fi-br-sign-out-alt w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
-              ></i>
-              Chiqish
-            </li>
-          </ul>
+        <!-- User Logo Dropdown -->
+        <div class="relative">
+          <img
+            :src="
+              profileStore?.user?.image
+                ? profileStore?.user?.image
+                : '/logo.png'
+            "
+            alt="User Logo"
+            class="w-10 h-10 rounded-full cursor-pointer"
+            @click="toggleDropdown"
+          />
+          <div
+            v-if="dropdownOpen"
+            class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg z-50"
+          >
+            <ul class="py-2">
+              <li
+                class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                @click="profileStore.router.push('/profile')"
+              >
+                <i
+                  class="fi fi-ss-user w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
+                ></i>
+                Sozlamalar
+              </li>
+
+              <li
+                class="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+                @click="logout"
+              >
+                <i
+                  class="fi fi-br-sign-out-alt w-5 h-5 mr-2 text-gray-600 dark:text-gray-300"
+                ></i>
+                Chiqish
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -78,70 +101,47 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
-import api from "@/api";
+import { ref, onMounted, computed } from "vue";
+import { useProfileStore } from "@/store/profileStore";
+import { useCartStore } from "@/store/cartStore";
 
-const toast = useToast();
+const profileStore = useProfileStore();
+const cartStore = useCartStore();
 const isDarkMode = ref(false);
 const dropdownOpen = ref(false);
-const router = useRouter();
-const user = ref();
-const token = localStorage.getItem("token");
 
-
-onMounted(async () => {
-  if (token) {
-    try {
-      const response = await api.get("/admins/auth/getme", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      user.value = response.data;
-    } catch (error) {
-      if (error.code == "ERR_NETWORK") return toast.warning("Tarmoq xatosi!");
-      toast.error("Ruxsati yo'q foydalanuvchi!");
-      console.log("error response", error.code);
-      localStorage.removeItem("token");
-
-      router.push("/login");
-    }
-  } else {
-    console.error("No token found");
-    // router.push("/login");
-  }
+// Load the dark mode setting from localStorage
+onMounted(() => {
+  const darkModeSetting = localStorage.getItem("isDarkMode");
+  isDarkMode.value = darkModeSetting === "true";
+  document.documentElement.classList.toggle("dark", isDarkMode.value);
+  profileStore.fetchUser();
+  console.log(cartStore.cart);
 });
 
 const toggleDarkMode = () => {
   isDarkMode.value = !isDarkMode.value;
-  if (isDarkMode.value) {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("darkMode", "true");
-  } else {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("darkMode", "false");
-  }
+  document.documentElement.classList.toggle("dark", isDarkMode.value);
+
+  // Save the dark mode setting to localStorage
+  localStorage.setItem("isDarkMode", isDarkMode.value.toString());
 };
 
-// Initialize dark mode based on local storage
-if (localStorage.getItem("darkMode") === "true") {
-  isDarkMode.value = true;
-  document.documentElement.classList.add("dark");
-}
-
+// Toggle dropdown menu
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
 };
 
-const navigateTo = (path) => {
-  router.push(`/${path}`);
+// Logout user
+const logout = () => {
+  profileStore.logOut();
   dropdownOpen.value = false;
 };
 
-const logout = () => {
-  localStorage.removeItem("token");
-  toast.success("Success logout");
-  router.push("/login");
-  dropdownOpen.value = false;
-};
+// Computed cart count
+const cartCount = computed(() => cartStore.getTotalItems());
 </script>
+
+<style scoped>
+/* Scoped styles if needed */
+</style>

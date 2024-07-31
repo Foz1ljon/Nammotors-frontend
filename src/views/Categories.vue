@@ -21,11 +21,9 @@
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
       >
         <CategoryCard
-          v-for="category in categories"
+          v-for="category in categoryStore.categories"
           :key="category._id"
           :category="category"
-          :token="token"
-          :refreshCategories="fetchCategories"
         />
       </div>
     </div>
@@ -40,7 +38,7 @@
           class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md"
         >
           <h2 class="text-2xl font-semibold mb-4">Yangi Kategoriya Qo'shish</h2>
-          <form @submit.prevent="createCategory">
+          <form @submit.prevent="createCategory(newCategory)">
             <div class="mb-4">
               <label class="block text-gray-700 dark:text-gray-300 mb-2">
                 Kategoriya Nomi:
@@ -76,54 +74,22 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useToast } from "vue-toastification";
-import api from "@/api";
 import CategoryCard from "@/components/CategoryCard.vue";
+import { useCategoyStore } from "../store/categoryStore";
 
-const toast = useToast();
-
-const categories = ref([]);
 const showCreateModal = ref(false);
 const newCategory = ref({ name: "" });
-const token = localStorage.getItem("token");
 
-const fetchCategories = () => {
-  const hdrs = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  api
-    .get("category", hdrs)
-    .then((res) => {
-      categories.value = res.data;
-    })
-    .catch((err) => {
-      toast.error("Failed to load categories.");
-      console.error("err response", err);
-    });
-};
+const categoryStore = useCategoyStore();
 
-onMounted(fetchCategories);
+onMounted(() => {
+  categoryStore.fetchCategory();
+});
 
-const createCategory = () => {
-  const hdrs = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  api
-    .post("/category", newCategory.value, hdrs)
-    .then((res) => {
-      toast.success("Kategoriya qo'shildi!");
-      categories.value.push(res.data);
-      newCategory.value = { name: "" }; // Reset input field
-      showCreateModal.value = false;
-    })
-    .catch((err) => {
-      toast.error("Xatolik!");
-      console.log("err create", err);
-    });
+const createCategory = (data) => {
+  categoryStore.createCategory(data);
+  showCreateModal.value = false;
+  newCategory.value = { name: "" };
 };
 </script>
 

@@ -93,7 +93,7 @@
             <i class="fi fi-sr-file-edit"></i> Edit
           </button>
           <button
-            @click="deleteAdmin(index)"
+            @click="deleteAdmin(admin._id)"
             class="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105"
           >
             <i class="fi fi-sr-trash"></i> Delete
@@ -101,21 +101,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Modals -->
+    <EditUserModal
+      v-if="showCreateModal"
+      :isVisible="showCreateModal"
+      @close="showCreateModal = false"
+      @update="fetchAdmins"
+    />
+    <EditUserModal
+      v-if="showUpdateModal"
+      :isVisible="showUpdateModal"
+      :user="selectedAdmin"
+      @close="showUpdateModal = false"
+      @update="fetchAdmins"
+    />
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import api from "@/api";
 import { useToast } from "vue-toastification";
+import EditUserModal from "@/components/UpdateProfile.vue"; // Adjust path as necessary
 
 const toast = useToast();
 const token = localStorage.getItem("token");
 
 const showCreateModal = ref(false);
+const showUpdateModal = ref(false);
 const showClientDropdown = ref(null);
 const searchTerm = ref("");
 const adminslist = ref([]);
+const selectedAdmin = ref(null);
 
 // Watch for changes in searchTerm and fetch admins
 watch(searchTerm, () => {
@@ -133,26 +150,28 @@ function fetchAdmins() {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => (adminslist.value = res.data))
-    .catch(() => toast.error("Failed to fetch admins."));
+    .catch(() => toast.error("Xatolik!"));
 }
 
 function openCreateModal() {
   showCreateModal.value = true;
 }
 
-function openUpdateModal(admin) {}
+function openUpdateModal(admin) {
+  selectedAdmin.value = admin;
+  showUpdateModal.value = true;
+}
 
 function deleteAdmin(index) {
-  const adminToDelete = adminslist.value[index];
   api
-    .delete(`/admins/${adminToDelete.username}`, {
+    .delete(`/admins/${index}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(() => {
-      adminslist.value.splice(index, 1);
+      fetchAdmins();
       toast.success("Admin o'chirildi!");
     })
-    .catch(() => toast.error("Failed to delete admin."));
+    .catch(() => toast.error("Ruxsat yo'q"));
 }
 
 function toggleClientDropdown(index) {
@@ -161,5 +180,3 @@ function toggleClientDropdown(index) {
 
 const filteredAdminList = computed(() => adminslist.value);
 </script>
-
-<style scoped></style>

@@ -6,8 +6,9 @@
       <span v-if="!isEditing" class="text-sm text-gray-900 dark:text-white">
         {{ category.name }}
       </span>
+      <!-- Edit Category -->
       <div v-if="isEditing">
-        <form @submit.prevent="updateCategory">
+        <form @submit.prevent="updateCategory(category._id, currentCategory)">
           <div class="mb-4 w-full">
             <label class="block text-gray-700 dark:text-gray-300 mb-2">
               Kategoriya Nomi:
@@ -34,6 +35,7 @@
           </div>
         </form>
       </div>
+
       <div v-if="!isEditing" class="flex items-center">
         <button
           @click="isEditing = true"
@@ -42,7 +44,7 @@
           <i class="fi fi-rr-file-edit"></i>
         </button>
         <button
-          @click="onDelete"
+          @click="onDelete(category._id)"
           class="text-red-500 hover:text-red-700 dark:hover:text-red-400"
         >
           <i class="fi fi-br-trash"></i>
@@ -54,58 +56,23 @@
 
 <script setup>
 import { ref } from "vue";
-import api from "@/api";
-import { useToast } from "vue-toastification";
+import { useCategoyStore } from "../store/categoryStore";
 
-const toast = useToast();
+const categoryStore = useCategoyStore();
 
 const props = defineProps({
   category: Object,
-  token: String,
-  refreshCategories: Function,
 });
 
 const isEditing = ref(false);
 const currentCategory = ref({ ...props.category });
 
-const updateCategory = () => {
-  const hdrs = {
-    headers: {
-      Authorization: `Bearer ${props.token}`,
-    },
-  };
-  api
-    .patch(
-      `/category/${currentCategory.value._id}`,
-      currentCategory.value,
-      hdrs
-    )
-    .then(() => {
-      toast.success("Kategoriya yangilandi!");
-      props.refreshCategories(); // Call the function to refresh the categories list
-      isEditing.value = false;
-    })
-    .catch((err) => {
-      toast.error("Xatolik!");
-      console.log("err update", err);
-    });
+const updateCategory = (id, data) => {
+  categoryStore.updateCategory(id, data);
+  isEditing.value = false;
 };
 
-const onDelete = () => {
-  const hdrs = {
-    headers: {
-      Authorization: `Bearer ${props.token}`,
-    },
-  };
-  api
-    .delete(`/category/${props.category._id}`, hdrs)
-    .then((res) => {
-      toast.success("Kategoriya o`chirildi!");
-      props.refreshCategories(); // Call the function to refresh the categories list
-    })
-    .catch((err) => {
-      toast.error("Xatolik!");
-      console.log("err delete", err);
-    });
+const onDelete = (id) => {
+  categoryStore.deleteCategory(id);
 };
 </script>

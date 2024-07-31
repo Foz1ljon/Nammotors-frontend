@@ -7,7 +7,7 @@
     <img
       :src="data.img"
       alt="Item Image"
-      class="w-32 h-32 object-cover rounded-lg shadow-sm"
+      class="w-32 h-32 object-cover rounded-md shadow-sm"
     />
     <div class="mt-2 text-center">
       <p class="text-gray-800 dark:text-gray-200 text-lg font-semibold">
@@ -31,7 +31,7 @@
         <img
           :src="data.img"
           alt="Item Image"
-          class="w-64 h-64 object-cover rounded-lg"
+          class="w-64 h-64 object-cover rounded-md"
         />
         <button
           class="absolute top-4 right-4 bg-white dark:bg-gray-700 dark:text-white text-black p-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -41,19 +41,19 @@
         </button>
         <div class="mt-4">
           <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            Product Details
+            Mahsulot Tafsilotlari
           </h4>
           <p class="text-gray-800 dark:text-gray-300 mt-2">
             Markasi: <span class="font-medium">{{ data.marka }}</span>
           </p>
           <p class="text-gray-800 dark:text-gray-300">
-            Price: <span class="font-medium">{{ data.price }} UZS</span>
+            Narxi: <span class="font-medium">{{ data.price }} UZS</span>
           </p>
           <p class="text-gray-800 dark:text-gray-300">
-            Location: <span class="font-medium">{{ data.location }}</span>
+            Manzil: <span class="font-medium">{{ data.location }}</span>
           </p>
           <p class="text-gray-800 dark:text-gray-300">
-            Quantity: <span class="font-medium">{{ data.count }}</span>
+            Miqdori: <span class="font-medium">{{ data.count }}</span>
           </p>
           <p class="text-gray-800 dark:text-gray-300">
             Turnover: <span class="font-medium">{{ data.turnover }}</span>
@@ -65,16 +65,22 @@
         <!-- Action Buttons -->
         <div class="mt-6 flex justify-end space-x-2">
           <button
+            @click="addToCart"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Savatga qo'shish
+          </button>
+          <button
             @click="editItem(data._id)"
             class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Edit
+            Tahrirlash
           </button>
           <button
-            @click="deleteItem"
+            @click="deleteItem(data._id)"
             class="bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
           >
-            Delete
+            O'chirish
           </button>
         </div>
       </div>
@@ -84,12 +90,15 @@
 
 <script setup>
 import { ref } from "vue";
-import api from "@/api";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
+import { useProductStore } from "@/store/productStore";
+import { useCartStore } from "@/store/cartStore";
 
+const productStore = useProductStore();
+const cartStore = useCartStore();
 const router = useRouter();
-
+const toast = useToast();
 const props = defineProps({
   data: {
     type: Object,
@@ -97,11 +106,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["delete", "edit"]);
-
 const showModal = ref(false);
-const token = localStorage.getItem("token");
-const toast = useToast();
 
 const openModal = () => {
   showModal.value = true;
@@ -111,21 +116,16 @@ const closeModal = () => {
   showModal.value = false;
 };
 
-const editItem = (index) => {
-  router.push(`products/${index}`);
+const addToCart = () => {
+  cartStore.addToCart(props.data);
 };
 
-const deleteItem = async () => {
-  try {
-    await api.delete(`/product/${props.data._id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    toast.success("Product deleted successfully");
-    emit("delete"); // Notify parent to refetch products
-  } catch (error) {
-    toast.error("Failed to delete product");
-    console.error("API error:", error);
-  }
+const editItem = (id) => {
+  router.push(`products/${id}`);
+};
+
+const deleteItem = async (id) => {
+  await productStore.deleteProduct(id);
 };
 </script>
 

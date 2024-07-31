@@ -4,7 +4,7 @@
   >
     <!-- Header Section -->
     <h1
-      class="text-center xl:text-[45px] lg:text-[35px] md:text-[25px] md:block hidden font-semibold"
+      class="text-center xl:text-[42px] lg:text-[35px] md:text-[22px] md:block hidden font-semibold"
     >
       Nammotors
     </h1>
@@ -15,7 +15,7 @@
       <router-link
         v-for="(item, i) in menu"
         :key="i"
-        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 md:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md"
+        class="flex lg:flex-row sm:flex-col flex-row items-center gap-2 sm:w-full rounded-md md:px-2 py-2.5 px-2 transition-colors shadow-md"
         active-class="bg-gray-400"
         :to="item.to"
         :class="

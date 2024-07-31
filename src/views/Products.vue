@@ -10,9 +10,9 @@
       </h1>
       <button
         @click="showCreateModal = true"
-        class="bg-slate-700 px-4 py-2 rounded-md text-white text-xl flex gap-2 items-center"
+        class="dark:bg-slate-700 bg-slate-300 px-4 py-2 rounded-md dark:text-white text-xl flex gap-2 items-center"
       >
-        <i class="fi fi-sr-square-plus"></i>
+        <i class="fi fi-sr-square-plus pt-1"></i>
         <p class="sm:block hidden">Mahsulot qo'shish</p>
       </button>
     </div>
@@ -29,7 +29,10 @@
     </div>
 
     <!-- Products Grid -->
-    <div v-if="loading" class="flex justify-center items-center h-48">
+    <div
+      v-if="productStore.loading"
+      class="flex justify-center items-center h-48"
+    >
       <div
         class="border-t-4 border-blue-500 border-solid w-12 h-12 rounded-full animate-spin"
       ></div>
@@ -39,7 +42,7 @@
       class="grid 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 gap-4 px-4"
     >
       <ProductItem
-        v-for="item in products"
+        v-for="item in productStore.products"
         :key="item._id"
         :data="item"
         @edit="openUpdatePage(item._id)"
@@ -58,46 +61,30 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useProductStore } from "@/store/productStore";
 import ProductItem from "@/components/ProductItem.vue";
 import CreateModal from "@/components/CreateProductModal.vue";
-import api from "@/api";
 
 const isDarkMode = ref(false);
 const searchItem = ref("");
-const products = ref([]);
-const loading = ref(true);
 const showCreateModal = ref(false);
-const showUpdateModal = ref(false);
 const selectedProductId = ref(null);
-const token = localStorage.getItem("token");
+const productStore = useProductStore();
 
-const fetchProducts = async () => {
-  try {
-    loading.value = true;
-    const response = await api.get(
-      `product/search?query=${searchItem.value.trim()}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    products.value = response.data;
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-  } finally {
-    loading.value = false;
-  }
-};
-
-const debouncedSearch = debounce(fetchProducts, 400);
+const debouncedSearch = debounce(() => {
+  productStore.fetchProducts(searchItem.value);
+}, 400);
 
 watch(searchItem, debouncedSearch);
 
 const openUpdatePage = (productId) => {
   selectedProductId.value = productId;
-  showUpdateModal.value = true;
+  // Add logic to open update modal or navigate to update page
 };
 
-onMounted(fetchProducts);
+onMounted(() => {
+  productStore.fetchProducts();
+});
 
 function debounce(func, delay) {
   let timeoutId;
