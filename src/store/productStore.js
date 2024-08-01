@@ -82,33 +82,5 @@ export const useProductStore = defineStore("product", {
         console.error("Kategoriyalarni olish xatosi:", error);
       }
     },
-
-    // Savatga mahsulot qo'shish
-    addToCart(product) {
-      const existingProductIndex = this.cart.findIndex(
-        (p) => p._id === product._id
-      );
-      if (existingProductIndex !== -1) {
-        this.cart[existingProductIndex].quantity += 1; // Miqdorni oshirish
-      } else {
-        this.cart.push({ ...product, quantity: 1 }); // Mahsulotni qo'shish
-      }
-      localStorage.setItem("cart", JSON.stringify(this.cart));
-      this.toast.success("Mahsulot savatga qo'shildi");
-    },
-
-    // Savatdan mahsulot o'chirish
-    removeFromCart(productId) {
-      this.cart = this.cart.filter((product) => product._id !== productId);
-      localStorage.setItem("cart", JSON.stringify(this.cart));
-      this.toast.success("Mahsulot savatdan o'chirildi");
-    },
-
-    // Savatni bo'shatish
-    clearCart() {
-      this.cart = [];
-      localStorage.removeItem("cart");
-      this.toast.success("Savat bo'shatildi");
-    },
   },
 });

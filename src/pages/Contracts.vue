@@ -1,23 +1,22 @@
 <template>
   <div class="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen relative">
-    <div class="flex items-center justify-between">
+    <!-- <div class="flex items-center justify-between">
       <h1
         class="md:text-4xl text-3xl d text-black dark:text-white font-semibold mb-6"
       >
         Shartnomalar
-      </h1>
+      </h1> -->
 
-      <!-- Create Button -->
-      <button
+    <!-- Create Button -->
+    <!-- <button
         @click="createContract"
         class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 absolute top-6 right-6"
       >
         <i class="fi fi-sr-add-document"></i>
       </button>
-    </div>
+    </div> -->
 
-    <!-- Contract Card -->
-    <ContractCard v-for="item in contract" :key="item" :contract="item" />
+    <!-- <ContractCard v-for="item in contract" :key="item" :contract="item" /> -->
   </div>
 </template>
 

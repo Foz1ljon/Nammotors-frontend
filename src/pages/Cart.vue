@@ -19,7 +19,9 @@
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
               {{ item.name }}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400">{{ item.price }} UZS</p>
+            <p class="text-gray-600 dark:text-gray-400">
+              Narxi {{ item.price }} UZS
+            </p>
             <p class="text-gray-600 dark:text-gray-400">
               Miqdori: {{ item.quantity }}
             </p>

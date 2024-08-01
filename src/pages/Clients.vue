@@ -52,7 +52,7 @@
         <tbody
           class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700"
         >
-          <tr v-for="client in clients" :key="client.id">
+          <tr v-for="client in clientStore.clients" :key="client._id">
             <td
               class="px-4 py-2 md:table-cell hidden text-sm text-gray-800 dark:text-gray-300"
             >
@@ -95,34 +95,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-
-import api from "@/api"; // Adjust the path to your API file
-import { useToast } from "vue-toastification";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useClientStore } from "../store/clientStore"; // Correct import
 
-const toast = useToast();
+const clientStore = useClientStore();
 
-const clients = ref([]);
 const router = useRouter();
 
-const token = localStorage.getItem("token");
-const hdrs = { headers: { Authorization: `Bearer ${token}` } };
-
-// Fetch clients from API
-const fetchClients = async () => {
-  try {
-    const response = await api.get("/clients/search?query=", hdrs);
-    clients.value = response.data;
-  } catch (error) {
-    toast.error("Mijozlarni olishda xatolik yuz berdi");
-    console.error("Mijozlarni olish xatosi:", error);
-  }
-};
-
-// Call fetchClients when component is mounted
 onMounted(() => {
-  fetchClients();
+  clientStore.fetchClients();
 });
 
 // Create client
@@ -132,16 +114,9 @@ const createClient = async () => {
 
 // Remove client
 const removeClient = async (client) => {
-  try {
-    await api.delete(`/clients/${client.id}`, hdrs);
-    await fetchClients();
-    toast.warning("Mijoz muvaffaqiyatli o'chirildi");
-  } catch (error) {
-    toast.error("Mijozni o'chirishda xatolik yuz berdi");
-  }
+  await clientStore.deleteClient(client._id);
 };
 
-// Open edit modal
 const openEditModal = (client) => {
   router.push(`/clients/${client._id}`);
 };

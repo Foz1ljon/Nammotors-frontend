@@ -268,7 +268,7 @@ const handleSubmit = async () => {
   });
 
   try {
-    await productStore.createProduct(formData); // Use store action
+    await productStore.createProduct(formData); // Use stores action
     resetForm();
     handleClose(); // Close the modal using handleClose
     emit("create");
@@ -299,8 +299,8 @@ const handleClose = () => {
 
 onMounted(async () => {
   try {
-    await productStore.fetchCategories(); // Use store action
-    categories.value = productStore.categories; // Load categories from store
+    await productStore.fetchCategories(); // Use stores action
+    categories.value = productStore.categories; // Load categories from stores
   } catch (err) {
     console.error("Error fetching categories:", err);
   }

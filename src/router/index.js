@@ -4,58 +4,58 @@ const routes = [
   {
     path: "/login",
     name: "auth",
-    component: () => import("@/pages/Auth.vue"),
+    component: () => import("@/layout/Auth.vue"),
     meta: { requiresAuth: false },
   },
   {
     path: "/",
     name: "dashboard",
     redirect: "/dashboard",
-    component: () => import("@/pages/Dashboard.vue"),
+    component: () => import("@/layout/Dashboard.vue"),
     meta: { requiresAuth: true },
     children: [
       {
         path: "/profile",
         name: "my-profile",
-        component: () => import("@/views/Profile.vue"),
+        component: () => import("@/pages/Profile.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/cart",
         name: "cart-page",
-        component: () => import("@/views/Cart.vue"),
+        component: () => import("@/pages/Cart.vue"),
         meta: { requiresAuth: true },
       },
 
       {
         path: "/dashboard",
         name: "home-page",
-        component: () => import("@/views/Home.vue"),
+        component: () => import("@/pages/Home.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/product",
         name: "product-create",
-        component: () => import("@/views/CreateAdmin.vue"),
+        component: () => import("@/pages/CreateAdmin.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/products",
         name: "product-list",
-        component: () => import("@/views/Products.vue"),
+        component: () => import("@/pages/Products.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/products/:id",
         name: "product-update",
-        component: () => import("@/views/UpdateProduct.vue"),
+        component: () => import("@/pages/UpdateProduct.vue"),
         meta: { requiresAuth: true },
       },
 
       {
         path: "/admins",
         name: "admins-list",
-        component: () => import("@/views/Admins.vue"),
+        component: () => import("@/pages/Admins.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -68,7 +68,7 @@ const routes = [
       {
         path: "/categories",
         name: "category-list",
-        component: () => import("@/views/Categories.vue"),
+        component: () => import("@/pages/Categories.vue"),
         meta: { requiresAuth: true },
       },
       {
@@ -81,20 +81,20 @@ const routes = [
       {
         path: "/clients",
         name: "client-list",
-        component: () => import("@/views/Clients.vue"),
+        component: () => import("@/pages/Clients.vue"),
         meta: { requiresAuth: true },
       },
       {
         path: "/clients/:id",
         name: "client-update",
-        component: () => import("@/views/UpdateClient.vue"),
+        component: () => import("@/pages/UpdateClient.vue"),
         meta: { requiresAuth: true },
       },
 
       {
         path: "/client",
         name: "client-create",
-        component: () => import("@/views/CreateClient.vue"),
+        component: () => import("@/pages/CreateClient.vue"),
         meta: { requiresAuth: true },
       },
 
@@ -108,7 +108,7 @@ const routes = [
       {
         path: "/contracts",
         name: "contract-list",
-        component: () => import("@/views/Contracts.vue"),
+        component: () => import("@/pages/Contracts.vue"),
         meta: { requiresAuth: true },
       },
     ],

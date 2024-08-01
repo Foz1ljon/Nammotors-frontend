@@ -45,7 +45,8 @@
           </div>
           <p
             :class="cartCount == 0 ? 'hidden' : ''"
-            class="absolute text-sm bg-red-500 text-white py-0.5 px-1 rounded-full -top-1 -right-2"
+            v-bind:class="cartCount < 10 ? 'py-0.5 px-2' : 'py-0.5 px-1'"
+            class="absolute text-sm bg-red-500 text-white  rounded-full -top-1 -right-2"
           >
             {{ cartCount }}
           </p>

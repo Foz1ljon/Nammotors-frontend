@@ -3,7 +3,7 @@
     <h1
       class="md:text-4xl text-3xl text-black dark:text-white font-semibold mb-6"
     >
-      Mijozni taxrirlash
+      Mijozni tahrirlash
     </h1>
 
     <form
@@ -30,7 +30,7 @@
       <input
         type="text"
         v-model="form.firma"
-        placeholder="Firmasini nomini kiriting"
+        placeholder="Firmasining nomini kiriting"
         class="p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-gray-800 text-black dark:text-white"
       />
 
@@ -68,14 +68,14 @@
           type="submit"
           class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-indigo-700 transition-colors"
         >
-          Update
+          Yangilash
         </button>
         <button
           type="button"
           @click="cancelUpdate"
           class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 transition-colors"
         >
-          Cancel
+          Bekor qilish
         </button>
       </div>
     </form>
@@ -84,11 +84,11 @@
 
 <script setup>
 import { onMounted, reactive } from "vue";
-import api from "@/api";
 import { useRoute, useRouter } from "vue-router";
-import { useToast } from "vue-toastification";
+import { useClientStore } from "../store/clientStore"; // Ensure correct import
 
-const types = ["b2b", "b2c", "b2g"];
+const clientStore = useClientStore();
+const types = clientStore.types; // Use the types from the stores
 
 const form = reactive({
   fname: "",
@@ -101,27 +101,17 @@ const form = reactive({
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
-const toast = useToast();
-const token = localStorage.getItem("token");
-const hdrs = { headers: { Authorization: `Bearer ${token}` } };
 
-onMounted(() => {
-  api.get(`clients/${id}`, hdrs).then((res) => {
-    Object.assign(form, res.data);
-    console.log(form);
-  });
+onMounted(async () => {
+  const clientData = await clientStore.getClientById(id);
+  if (clientData) {
+    Object.assign(form, clientData);
+  }
 });
 
-const updateClient = () => {
-  api
-    .put(`/clients/${id}`, form, hdrs)
-    .then((res) => {
-      toast.success("Mijoz ma'lumotlari yangilandi");
-      router.push("/clients");
-    })
-    .catch((err) => {
-      toast.error("Xatolik!");
-    });
+const updateClient = async () => {
+  await clientStore.updateClient(id, form);
+  router.push("/clients");
 };
 
 const cancelUpdate = () => {

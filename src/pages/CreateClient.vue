@@ -13,8 +13,9 @@
         <label
           for="fname"
           class="block text-black dark:text-white mb-2 font-medium"
-          >Ism</label
         >
+          Ism
+        </label>
         <input
           id="fname"
           type="text"
@@ -29,8 +30,9 @@
         <label
           for="phone_number"
           class="block text-black dark:text-white mb-2 font-medium"
-          >Telefon raqam</label
         >
+          Telefon raqam
+        </label>
         <input
           id="phone_number"
           type="text"
@@ -45,8 +47,9 @@
         <label
           for="firma"
           class="block text-black dark:text-white mb-2 font-medium"
-          >Firma</label
         >
+          Firma
+        </label>
         <input
           id="firma"
           type="text"
@@ -61,8 +64,9 @@
         <label
           for="location"
           class="block text-black dark:text-white mb-2 font-medium"
-          >Manzil</label
         >
+          Manzil
+        </label>
         <input
           id="location"
           type="text"
@@ -77,8 +81,9 @@
         <label
           for="type"
           class="block text-black dark:text-white mb-2 font-medium"
-          >Turini tanlang</label
         >
+          Turini tanlang
+        </label>
         <select
           id="type"
           v-model="form.type"
@@ -105,11 +110,15 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import api from "@/api";
-const types = ["b2b", "b2c", "b2g"];
+import { ref } from "vue";
+import { useClientStore } from "@/store/clientStore";
+import { useRouter } from "vue-router";
 
-const form = reactive({
+const types = ["b2b", "b2c", "b2g"];
+const router = useRouter();
+const clientStore = useClientStore();
+
+const form = ref({
   fname: "",
   phone_number: "",
   firma: "",
@@ -117,11 +126,12 @@ const form = reactive({
   type: "",
 });
 
-const createClient = () => {
-  alert("Client created successfully");
+const createClient = async () => {
+  await clientStore.createClient(form.value);
+  router.push("/clients");
 };
 </script>
 
 <style scoped>
-/* Optional scoped styles */
+/* Optional scoped styles for specific customization */
 </style>
